@@ -1,0 +1,74 @@
+---
+const quotes = [
+  {
+    text: 'Dein Auftritt war – wie immer – super! Tausend Dank dafür! Alle hatten reichlich Spass. Das Fest wird bei allen noch lange in Erinnerung bleiben!',
+    who: 'Viktoria',
+    what: 'Privatfest',
+  },
+  {
+    text: 'Es hat jeder geschwärmt, wie angenehm und gut die Musik war – also nicht zu laut!',
+    who: 'Juliane',
+    what: 'Hochzeit',
+  },
+  {
+    text: 'Sehr gerne würden wir dich auch im nächsten Jahr wieder buchen.',
+    who: 'Dani',
+    what: 'Fussballclub-Fest',
+  },
+  {
+    text: 'Didie ist ein Garant für Top-Stimmung und weiss, was die Partypeople wollen!',
+    who: 'Veranstalter',
+    what: 'Oktoberfest Sarmenstorf',
+  },
+];
+---
+
+<section class="section section--white" aria-labelledby="stimmen-titel">
+  <div class="wrap">
+    <span class="eyebrow">Zufriedene Kunden</span>
+    <h2 id="stimmen-titel">Das sagen meine Gastgeber</h2>
+    <p class="lead">Viele Veranstalter buchen mich Jahr für Jahr wieder – das ist für mich das schönste Kompliment.</p>
+    <div class="grid quotes">
+      {
+        quotes.map((q) => (
+          <figure class="card quote">
+            <blockquote>„{q.text}“</blockquote>
+            <figcaption>
+              <strong>{q.who}</strong> · {q.what}
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .quotes {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    margin-top: 32px;
+  }
+
+  .quote {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    border-top: 4px solid var(--accent);
+  }
+
+  .quote blockquote {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  .quote figcaption {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .quote strong {
+    color: var(--text);
+  }
+</style>

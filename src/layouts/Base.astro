@@ -1,0 +1,92 @@
+---
+import { u, isPreview } from '../lib/url';
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { site } from '../data/site';
+import ogDefault from '../assets/img/didie-martin.jpg';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: ImageMetadata;
+  type?: 'website' | 'article';
+  noContactBand?: boolean;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+}
+
+const { title, description, image = ogDefault, type = 'website', noContactBand = false, noindex = false, jsonLd = [] } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const fullTitle = Astro.url.pathname === u('/') ? title : `${title} | ${site.name}`;
+const og = await getImage({ src: image, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+const ogUrl = new URL(og.src, site.url).href;
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicGroup',
+  '@id': `${site.url}/#band`,
+  name: site.name,
+  alternateName: ['Alpenexpress Didie', 'Alpen Express Partyband'],
+  description: 'Partyband und Alleinunterhalter aus Vorarlberg für Hochzeiten, Geburtstage, Firmenfeiern und Zeltfeste in Österreich, der Schweiz, Liechtenstein und Deutschland.',
+  url: `${site.url}/`,
+  image: ogUrl,
+  logo: new URL(u('/apple-touch-icon.png'), site.url).href,
+  telephone: site.phone.replace(/\s/g, ''),
+  email: site.email,
+  genre: ['Partymusik', 'Schlager', 'Austropop', 'Volksmusik', 'Rock', 'Country'],
+  member: [{ '@type': 'Person', name: site.person }],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.street,
+    postalCode: site.zip,
+    addressLocality: site.city,
+    addressRegion: site.region,
+    addressCountry: 'AT',
+  },
+  areaServed: ['Vorarlberg', 'Tirol', 'Schweiz', 'Liechtenstein', 'Süddeutschland'],
+  sameAs: [site.facebook, site.youtube],
+};
+---
+
+<!doctype html>
+<html lang="de-AT">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#16181d" />
+    <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={u('/favicon-32.png')} sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href={u('/apple-touch-icon.png')} />
+    {(isPreview || noindex) && <meta name="robots" content="noindex, nofollow" />}
+    {!isPreview && <link rel="sitemap" href="/sitemap-index.xml" />}
+
+    <meta property="og:type" content={type} />
+    <meta property="og:locale" content="de_AT" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify([organization, ...jsonLd])} />
+  </head>
+  <body>
+    <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+    <Header />
+    <main id="inhalt">
+      <slot />
+    </main>
+    {!noContactBand && <ContactBand />}
+    <Footer />
+  </body>
+</html>

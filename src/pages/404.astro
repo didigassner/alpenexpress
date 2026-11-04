@@ -1,0 +1,14 @@
+---
+import { u } from '../lib/url';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+---
+
+<Base title="Seite nicht gefunden" description="Diese Seite gibt es leider nicht (mehr).">
+  <PageHero eyebrow="Fehler 404" title="Hier spielt leider keine Musik" lead="Diese Seite gibt es nicht (mehr). Vielleicht findest du über die Navigation, was du suchst.">
+    <div class="btn-row" style="margin-top: 24px">
+      <a class="btn" href={u('/')}>Zur Startseite</a>
+      <a class="btn btn--ghost" href={u('/kontakt/')}>Kontakt</a>
+    </div>
+  </PageHero>
+</Base>

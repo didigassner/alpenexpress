@@ -1,0 +1,52 @@
+---
+import { u } from '../../lib/url';
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import VideoGrid from '../../components/VideoGrid.astro';
+import Icon from '../../components/Icon.astro';
+import { videos } from '../../data/media';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('rueckblick');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const video = videos.filter((v) => v.id === post.data.video);
+const date = new Intl.DateTimeFormat('de-AT', { day: 'numeric', month: 'long', year: 'numeric' }).format(post.data.date);
+
+const article = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  author: { '@type': 'Person', name: site.person },
+  publisher: { '@id': `${site.url}/#band` },
+  mainEntityOfPage: new URL(u(`/rueckblick/${post.id}/`), site.url).href,
+};
+---
+
+<Base title={post.data.title} description={post.data.description} image={post.data.image} type="article" jsonLd={[article]}>
+  <PageHero eyebrow={`Rückblick · ${date}`} title={post.data.title} />
+
+  <section class="section">
+    <article class="wrap prose">
+      {post.data.image && <Image src={post.data.image} alt={post.data.imageAlt ?? ''} widths={[480, 800, 1200]} sizes="(max-width: 760px) 100vw, 700px" />}
+      <Content />
+      {video.length > 0 && <VideoGrid videos={video} />}
+      <p class="back"><a href={u('/rueckblick/')}>← Alle Rückblicke</a></p>
+      <a class="btn" href={u('/kontakt/')}>Dein Fest anfragen <Icon name="arrow" /></a>
+    </article>
+  </section>
+</Base>
+
+<style>
+  .back {
+    margin-top: 40px;
+  }
+</style>

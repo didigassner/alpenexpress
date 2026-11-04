@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+---
+
+<Base title="Impressum" description="Impressum und Offenlegung von Alpen Express Didie, Didie Martin, Ludesch (Vorarlberg)." noContactBand>
+  <PageHero title="Impressum" />
+  <section class="section">
+    <div class="wrap prose">
+      <p>Informationspflicht laut § 5 E-Commerce-Gesetz (ECG) und Offenlegung laut § 25 Mediengesetz.</p>
+
+      <h2>Diensteanbieter</h2>
+      <p>
+        <strong>Alpen Express Partyband</strong><br />
+        {site.person}<br />
+        {site.street}<br />
+        {site.zip} {site.city}<br />
+        {site.region}, {site.country}
+      </p>
+      <p>
+        Telefon: <a href={site.phoneHref}>{site.phone}</a><br />
+        E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a>
+      </p>
+
+      <p>
+        Unternehmensgegenstand: Musikalische Unterhaltung<br />
+        Berufsbezeichnung: Musiker<br />
+        Aufsichtsbehörde: Bezirkshauptmannschaft Bludenz
+      </p>
+
+      <h2>Blattlinie</h2>
+      <p>Information über die musikalischen Angebote von Alpen Express Didie.</p>
+
+      <h2>Haftung für Inhalte</h2>
+      <p>
+        Die Inhalte dieser Website werden mit grösster Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Sollten dir problematische oder rechtswidrige Inhalte auffallen, bitten wir dich, uns umgehend zu kontaktieren.
+      </p>
+
+      <h2>Haftung für Links</h2>
+      <p>
+        Diese Website enthält Links zu externen Websites, auf deren Inhalte wir keinen Einfluss haben. Für diese Inhalte ist der jeweilige Anbieter verantwortlich. Zum Zeitpunkt der Verlinkung waren keine Rechtsverstösse erkennbar; sollten uns solche bekannt werden, entfernen wir die betreffenden Links umgehend.
+      </p>
+
+      <h2>Urheberrecht</h2>
+      <p>
+        Alle Inhalte dieser Website (Texte, Fotos, Audio- und Videoaufnahmen) unterliegen dem österreichischen Urheberrecht. Bitte frag uns, bevor du Inhalte verbreitest, vervielfältigst oder anderweitig verwendest.
+      </p>
+
+      <h2>Bildnachweis</h2>
+      <p>Fotos: {site.person}, sofern nicht anders angegeben.</p>
+    </div>
+  </section>
+</Base>

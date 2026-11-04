@@ -1,0 +1,315 @@
+---
+import { u } from '../lib/url';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const occasions = ['Hochzeit', 'Geburtstag', 'Firmenfeier', 'Weihnachtsfeier', 'Vereinsfest / Zeltfest', 'Jubiläum', 'Anderer Anlass'];
+---
+
+<Base
+  title="Kontakt & Anfrage"
+  description="Unverbindlich anfragen: Telefon, WhatsApp oder E-Mail an Alpen Express Didie. Kostenloses Angebot für deine Hochzeit, Geburtstagsfeier, Firmenfeier oder dein Vereinsfest."
+  noContactBand
+>
+  <PageHero eyebrow="Kontakt" title="Lass uns über dein Fest reden" lead="Ich informiere und unterstütze dich gerne bei allen Fragen zu deinem bevorstehenden Fest – kostenlos und unverbindlich." />
+
+  <section class="section">
+    <div class="wrap contact">
+      <aside class="contact__direct">
+        <h2>Direkt erreichbar</h2>
+        <p>Am schnellsten geht's per Telefon oder WhatsApp.</p>
+        <div class="contact__links">
+          <a class="card contact__link" href={site.phoneHref}>
+            <Icon name="phone" />
+            <span><small>Anrufen</small>{site.phone}</span>
+          </a>
+          <a class="card contact__link" href={site.whatsappHref} target="_blank" rel="noopener">
+            <Icon name="whatsapp" />
+            <span><small>WhatsApp</small>Nachricht schreiben</span>
+          </a>
+          <a class="card contact__link" href={`mailto:${site.email}`}>
+            <Icon name="mail" />
+            <span><small>E-Mail</small>{site.email}</span>
+          </a>
+        </div>
+        <p class="contact__person">
+          <strong>{site.person}</strong><br />
+          {site.street}, {site.zip} {site.city}<br />
+          {site.region}, {site.country}
+        </p>
+      </aside>
+
+      <div class="card contact__form">
+        <h2>Anfrage senden</h2>
+        <p class="hint">Fülle aus, was du schon weisst – ich melde mich so bald wie möglich bei dir. Mit * markierte Felder brauche ich, um dir antworten zu können.</p>
+        <div class="form-success" id="erfolg" tabindex="-1" hidden>
+          <h3>Danke – ich melde mich bei dir!</h3>
+          <p>Deine Anfrage ist bei mir angekommen.</p>
+        </div>
+        <form id="anfrage" action={u('/anfrage.php')} method="post">
+          <div class="row">
+            <label>Dein Name *<input name="name" required maxlength="100" autocomplete="name" /></label>
+            <label>Deine E-Mail *<input name="email" type="email" required maxlength="254" autocomplete="email" /></label>
+          </div>
+          <div class="row">
+            <label>Telefon (optional)<input name="telefon" type="tel" maxlength="50" autocomplete="tel" /></label>
+            <label>
+              Anlass
+              <select name="anlass" id="anlass">
+                {occasions.map((o) => <option>{o}</option>)}
+              </select>
+            </label>
+          </div>
+          <div class="row">
+            <label>Datum<input name="datum" type="date" /></label>
+            <label>Anzahl Gäste (ca.)<input name="gaeste" inputmode="numeric" maxlength="20" /></label>
+          </div>
+          <label>Ort / Location<input name="ort" maxlength="150" /></label>
+          <fieldset>
+            <legend>Besetzung</legend>
+            <label class="radio"><input type="radio" name="besetzung" value="Solo" /> Solo</label>
+            <label class="radio"><input type="radio" name="besetzung" value="Duo" /> Duo</label>
+            <label class="radio"><input type="radio" name="besetzung" value="Noch offen – bitte beraten" checked /> Noch offen</label>
+          </fieldset>
+          <label>Deine Nachricht<textarea name="nachricht" rows="5" maxlength="4000" placeholder="Zeitrahmen, Musikwünsche, Fragen …"></textarea></label>
+          <div class="hp" aria-hidden="true">
+            <label>Bitte nicht ausfüllen<input name="homepage" tabindex="-1" autocomplete="off" /></label>
+          </div>
+          <input type="hidden" name="dauer" value="" />
+          <p class="form-error" id="fehler" role="alert">
+            <span data-text>Das hat leider nicht geklappt.</span>{' '}
+            Bitte versuche es noch einmal oder ruf mich direkt an: <a href={site.phoneHref}>{site.phone}</a>
+          </p>
+          <p class="privacy">Mit dem Absenden werden deine Angaben zur Bearbeitung deiner Anfrage per E-Mail an mich übermittelt. Mehr dazu in der <a href={u('/datenschutz/')}>Datenschutzerklärung</a>.</p>
+          <button class="btn" type="submit">Anfrage senden <Icon name="arrow" /></button>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#anfrage')!;
+  const error = document.querySelector<HTMLElement>('#fehler')!;
+  const success = document.querySelector<HTMLElement>('#erfolg')!;
+  const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+
+  const messages: Record<string, string> = {
+    limit: 'Es wurden gerade zu viele Anfragen gesendet.',
+    invalid: 'Bitte prüfe deine Angaben, vor allem die E-Mail-Adresse.',
+  };
+
+  const preset = new URLSearchParams(location.search).get('anlass');
+  if (preset) {
+    const select = form.querySelector<HTMLSelectElement>('#anlass')!;
+    if ([...select.options].some((o) => o.value === preset)) select.value = preset;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    error.classList.remove('is-visible');
+    button.disabled = true;
+
+    const data = new FormData(form);
+    data.set('dauer', String(Math.round(performance.now())));
+
+    let code = 'network';
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+      const result = await res.json();
+      if (result.ok) {
+        form.hidden = true;
+        success.hidden = false;
+        success.focus();
+        return;
+      }
+      code = result.error;
+    } catch {
+      // Eingaben bleiben erhalten, unten erscheint der Hinweis mit der Telefonnummer
+    }
+
+    error.querySelector('[data-text]')!.textContent = messages[code] ?? 'Das hat leider nicht geklappt.';
+    error.classList.add('is-visible');
+    button.disabled = false;
+  });
+</script>
+
+<style>
+  .contact {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 900px) {
+    .contact {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: start;
+    }
+  }
+
+  .contact__links {
+    display: grid;
+    gap: 12px;
+    margin-block: 20px 28px;
+  }
+
+  .contact__link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 650;
+    overflow-wrap: anywhere;
+  }
+
+  .contact__link:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .contact__link svg {
+    width: 28px;
+    height: 28px;
+    flex: none;
+    color: var(--accent);
+  }
+
+  .contact__link small {
+    display: block;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .contact__person {
+    color: var(--muted);
+  }
+
+  .hint {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  form {
+    display: grid;
+    gap: 16px;
+  }
+
+  .row {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  }
+
+  label {
+    display: grid;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  input:not([type='radio']),
+  select,
+  textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 14px;
+    font: inherit;
+    font-weight: 400;
+    color: var(--text);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+
+  legend {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+    width: 100%;
+  }
+
+  .radio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+  }
+
+  .radio input {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--accent);
+  }
+
+  form .btn {
+    justify-self: start;
+  }
+
+  form .btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  form[hidden] {
+    display: none;
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+  }
+
+  .privacy {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .form-error {
+    display: none;
+    margin: 0;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--accent);
+    background: rgb(200 52 27 / 0.08);
+  }
+
+  .form-error:target,
+  .form-error.is-visible {
+    display: block;
+  }
+
+  .form-success {
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid var(--accent);
+    background: var(--paper);
+  }
+
+  .form-success h3,
+  .form-success p {
+    margin: 0;
+  }
+
+  .form-success h3 {
+    margin-bottom: 0.3em;
+  }
+</style>
