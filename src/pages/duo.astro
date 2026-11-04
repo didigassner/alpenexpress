@@ -1,0 +1,40 @@
+---
+import { u } from '../lib/url';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import duo from '../assets/img/duo-didie-oskar.jpg';
+---
+
+<Base
+  title="Duo Alpen Express – Didie & Oskar"
+  description="Alpen Express Didie im Duo mit Gitarrist und Sänger Oskar: die Top-Kombination für mittlere und grosse Feste, Hochzeiten und Firmenevents. Spitzenunterhaltung zu fairen Preisen."
+>
+  <PageHero eyebrow="Duo Alpen Express" title="Die Top-Kombination" lead="Für kleinere und grössere Events auch mit Gitarrist und Sänger Oskar buchbar." />
+
+  <section class="section">
+    <div class="wrap grid grid--2">
+      <Image src={duo} alt="Didie Martin und Oskar mit E-Gitarre auf der Bühne" class="photo" widths={[480, 800, 1075]} sizes="(max-width: 760px) 100vw, 560px" />
+      <div>
+        <span class="eyebrow">Unser Motto</span>
+        <h2>Spitzenunterhaltung zu fairen Preisen</h2>
+        <p>
+          Zu zweit wird's noch voller: Didie an Keyboard und Gesang, Oskar an Gitarre und Gesang. Gemeinsam bereichern wir deine Veranstaltung mit mitreissender Live-Musik – vom gefühlvollen Apéro bis zur ausgelassenen Party.
+        </p>
+        <p>Das Duo ist deine Garantie für:</p>
+        <ul class="checklist">
+          <li>Zufriedenheit bei jedem Event</li>
+          <li>Professionelle Unterhaltung für Jung und Alt</li>
+          <li>Zweistimmigen Gesang und echte Live-Gitarre</li>
+          <li>Eigene Ton- und Lichttechnik</li>
+        </ul>
+        <p>Überlass nichts dem Zufall – ich berate dich gerne und beantworte alle deine Fragen.</p>
+        <div class="btn-row">
+          <a class="btn" href={u('/kontakt/')}>Duo anfragen <Icon name="arrow" /></a>
+          <a class="btn btn--ghost" href={u('/hochzeit/')}>Das Duo auf Hochzeiten</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

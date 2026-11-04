@@ -1,0 +1,299 @@
+---
+import { u } from '../lib/url';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Testimonials from '../components/Testimonials.astro';
+import AudioList from '../components/AudioList.astro';
+import didie from '../assets/img/didie-martin.jpg';
+import duo from '../assets/img/duo-didie-oskar.jpg';
+import { site } from '../data/site';
+
+const occasions = [
+  { title: 'Hochzeiten', text: 'Von der Trauung über den Apéro bis zur Party in den Morgenstunden – inklusive Wunschlied für den Brauttanz.' },
+  { title: 'Geburtstage & Jubiläen', text: 'Musik für alle Generationen, die Gäste vom ersten Lied an auf die Tanzfläche holt.' },
+  { title: 'Firmen- & Weihnachtsfeiern', text: 'Dezente Hintergrundmusik zum Essen, danach Stimmung – zuverlässig und professionell.' },
+  { title: 'Zeltfeste & Vereine', text: 'Oktoberfest, Grümpelturnier, Funkenfest oder Saisonabschluss: Partykracher und Mitsinglieder bis zum Schluss.' },
+];
+
+const included = [
+  'Hintergrundmusik zum Apéro und Essen',
+  'Professionelle Ton- und Lichtanlage',
+  'Technik für Präsentationen und Showeinlagen',
+  'Angenehme Lautstärke – auch für ältere Gäste',
+  'Animation und Mitmachspiele auf Wunsch',
+  'Tipps für Locations und Catering (A & CH)',
+];
+
+const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart', 'Schlager', 'Volksmusik', 'Oberkrainer', '70er – 90er', "Rock 'n' Roll", 'Rock & Pop', 'Country', 'Line Dance', 'Evergreens', 'Tanzmusik'];
+---
+
+<Base
+  title="Alpen Express Didie – Partyband & Alleinunterhalter aus Vorarlberg"
+  description="Live-Musik für Hochzeiten, Geburtstage, Firmenfeiern und Zeltfeste: Alpen Express Didie spielt solo oder im Duo in Vorarlberg, der Schweiz, Liechtenstein und Süddeutschland. Jetzt unverbindlich anfragen."
+>
+  <section class="hero">
+    <Image src={didie} alt="Didie Martin von Alpen Express" class="hero__img" widths={[640, 1024, 1600, 2200]} sizes="100vw" loading="eager" fetchpriority="high" />
+    <div class="wrap hero__content">
+      <span class="eyebrow">Partyband & Alleinunterhalter aus Vorarlberg</span>
+      <h1>Musik, über die deine Gäste noch lange reden.</h1>
+      <p class="lead">
+        Alpen Express Didie bringt Stimmung auf Hochzeiten, Geburtstage, Firmenfeiern und Zeltfeste – solo oder im Duo, in Österreich, der Schweiz, Liechtenstein und Süddeutschland.
+      </p>
+      <div class="btn-row">
+        <a class="btn" href={u('/kontakt/')}>Kostenloses Angebot anfragen <Icon name="arrow" /></a>
+        <a class="btn btn--ghost" href={u('/mediathek/')}>Hörproben anhören</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid grid--2">
+      <div>
+        <span class="eyebrow">Herzlich willkommen</span>
+        <h2>Hey, ich bin Didie!</h2>
+        <p>
+          Didie Martin, alias Alpen Express Didie. Seit vielen Jahren stehe ich mit Gesang und Keyboard auf der Bühne – mit einem Ziel: dass dein Fest ein voller Erfolg wird. Ob als Alleinunterhalter oder im Duo mit Oskar an der Gitarre, ich lebe leidenschaftlich für die Musik, weil sie
+        </p>
+        <ul class="checklist">
+          <li>glücklich macht,</li>
+          <li>Spass macht,</li>
+          <li>Freude bringt</li>
+          <li>und vor allem Menschen verbindet.</li>
+        </ul>
+        <p>
+          Bekannt aus Funk und Fernsehen – unter anderem aus der Rudi Carrell Show – und gebucht von Brautpaaren, Vereinen und Unternehmen weit über Vorarlberg hinaus.
+        </p>
+        <a href={u('/didie/')}>Mehr über mich <Icon name="arrow" class="inline-icon" /></a>
+      </div>
+      <Image src={duo} alt="Didie Martin und Gitarrist Oskar vor ihrer Bühnentechnik" class="photo" widths={[480, 800, 1075]} sizes="(max-width: 760px) 100vw, 560px" />
+    </div>
+  </section>
+
+  <section class="section section--white">
+    <div class="wrap">
+      <span class="eyebrow">Für jeden Anlass</span>
+      <h2>Wofür du mich buchen kannst</h2>
+      <div class="grid grid--3 occasions">
+        {
+          occasions.map((o) => (
+            <div class="card occasion">
+              <h3>{o.title}</h3>
+              <p>{o.text}</p>
+            </div>
+          ))
+        }
+      </div>
+      <div class="btn-row occasions-cta">
+        <a class="btn" href={u('/kontakt/')}>Unverbindlich anfragen <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="wrap grid grid--2 align-start">
+      <div>
+        <span class="eyebrow">Ohne Mehrkosten</span>
+        <h2>Das ist bei mir inklusive</h2>
+        <p class="lead">
+          Du sollst dein Fest geniessen können, statt dich um Technik zu kümmern. Deshalb gehört bei mir mehr dazu als nur die Musik.
+        </p>
+        <ul class="checklist">
+          {included.map((i) => <li>{i}</li>)}
+        </ul>
+      </div>
+      <div>
+        <h3>Riesige Liederauswahl – in mehreren Sprachen</h3>
+        <p>Von AC/DC bis ins Zillertal: Das Programm passt zu jedem Geschmack und jedem Alter.</p>
+        <ul class="tags">
+          {genres.map((g) => <li>{g}</li>)}
+        </ul>
+        <p class="more"><a href={u('/repertoire/')}>Zum Repertoire <Icon name="arrow" class="inline-icon" /></a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid grid--2 align-start">
+      <div>
+        <span class="eyebrow">Reinhören</span>
+        <h2>So klingt Alpen Express</h2>
+        <p class="lead">Zwei kurze Hörproben aus dem Programm – viele weitere findest du in der Mediathek.</p>
+        <a class="btn" href={u('/mediathek/')}>Alle Hörproben & Videos</a>
+      </div>
+      <AudioList
+        tracks={[
+          { title: "What You're Proposing", artist: 'Status Quo', file: 'what-youre-proposing.mp3' },
+          { title: 'Dem Land Tirol die Treue', file: 'dem-land-tirol-die-treue.mp3' },
+        ]}
+      />
+    </div>
+  </section>
+
+  <Testimonials />
+
+  <section class="section">
+    <div class="wrap narrow">
+      <span class="eyebrow">Gut zu wissen</span>
+      <h2>Häufige Fragen</h2>
+      <div class="faq">
+        <details>
+          <summary>Wo spielst du?</summary>
+          <p>Vor allem in Vorarlberg, der ganzen Schweiz, Liechtenstein und Süddeutschland – auf Anfrage aber auch weiter weg. Ich wohne in {site.city}, Vorarlberg.</p>
+        </details>
+        <details>
+          <summary>Solo oder Duo – was passt zu meinem Fest?</summary>
+          <p>Für kleinere Feiern reicht oft der Alleinunterhalter mit Gesang und Keyboard. Für grössere Feste und Hochzeiten empfehle ich das Duo mit Oskar an Gitarre und Gesang. Gerne berate ich dich persönlich.</p>
+        </details>
+        <details>
+          <summary>Kannst du auch mein Wunschlied spielen?</summary>
+          <p>Sehr gerne! Ist ein Titel noch nicht im Repertoire, studiere ich ihn für dich ein – sag mir bitte etwa vier Wochen vor dem Termin Bescheid.</p>
+        </details>
+        <details>
+          <summary>Wie schnell sollte ich buchen?</summary>
+          <p>Gerade an Wochenenden im Sommer und in der Hochzeitssaison sind Termine schnell vergeben. Bestätige deinen Termin am besten innerhalb von fünf Tagen nach meinem Angebot – danach kann er bereits vergeben sein.</p>
+        </details>
+        <details>
+          <summary>Was kostet ein Auftritt?</summary>
+          <p>Das hängt von Dauer, Ort und Besetzung ab. Schick mir einfach eine kurze Anfrage, du bekommst ein kostenloses und unverbindliches Angebot – faire Preise sind mir wichtig.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    min-height: min(88vh, 820px);
+    display: flex;
+    align-items: flex-end;
+    color: #fff;
+    background: var(--ink);
+    overflow: hidden;
+  }
+
+  .hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 60% 25%;
+    z-index: -2;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(to top, rgb(14 15 18 / 0.95) 0%, rgb(14 15 18 / 0.6) 45%, rgb(14 15 18 / 0.1) 100%),
+      linear-gradient(to right, rgb(14 15 18 / 0.6), transparent 70%);
+  }
+
+  .hero__content {
+    padding-block: 120px clamp(48px, 8vw, 96px);
+  }
+
+  .hero h1 {
+    max-width: 14ch;
+  }
+
+  .hero .eyebrow {
+    color: var(--gold);
+  }
+
+  .hero .lead {
+    color: #ddd8ce;
+    margin-bottom: 28px;
+  }
+
+  .align-start {
+    align-items: start;
+  }
+
+  .occasions {
+    margin-top: 32px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  }
+
+  .occasion {
+    border-top: 4px solid var(--accent);
+  }
+
+  .occasions-cta {
+    margin-top: 32px;
+  }
+
+  .occasion p {
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .more {
+    margin-top: 20px;
+  }
+
+  :global(.inline-icon) {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+  }
+
+  .faq {
+    display: grid;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .faq details {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+
+  .faq summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 20px 18px 24px;
+    cursor: pointer;
+    font-weight: 650;
+    list-style: none;
+    border-radius: 12px;
+  }
+
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq summary::after {
+    content: '';
+    flex: none;
+    width: 10px;
+    height: 10px;
+    margin-right: 4px;
+    border-right: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transform: translateY(-3px) rotate(45deg);
+    transition: transform 0.2s;
+  }
+
+  .faq details[open] summary::after {
+    transform: translateY(2px) rotate(-135deg);
+  }
+
+  .faq summary:focus-visible {
+    outline-offset: -3px;
+  }
+
+  .faq details p {
+    margin: 0;
+    padding: 0 24px 20px;
+    color: var(--muted);
+  }
+</style>

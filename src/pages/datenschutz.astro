@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { site } from '../data/site';
+---
+
+<Base title="Datenschutzerklärung" description="Datenschutzerklärung von Alpen Express Didie: keine Cookies, kein Tracking, YouTube-Videos erst nach Klick." noContactBand>
+  <PageHero title="Datenschutz" lead="Kurz gesagt: Diese Website setzt keine Cookies, verwendet kein Tracking und lädt keine Inhalte von Drittanbietern, solange du nicht selbst ein Video startest." />
+  <section class="section">
+    <div class="wrap prose">
+      <h2>Verantwortlicher</h2>
+      <p>
+        {site.person}<br />
+        {site.street}, {site.zip} {site.city}, {site.country}<br />
+        E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a><br />
+        Telefon: <a href={site.phoneHref}>{site.phone}</a>
+      </p>
+
+      <h2>Aufruf der Website (Server-Logfiles)</h2>
+      <p>
+        Beim Aufruf dieser Website speichert der Webserver unseres Hosting-Anbieters automatisch technische Informationen, die dein Browser übermittelt: IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, Referrer, Browser und Betriebssystem. Diese Daten sind für den sicheren und stabilen Betrieb der Website erforderlich (Art. 6 Abs. 1 lit. f DSGVO), werden nicht mit anderen Daten zusammengeführt und nach kurzer Zeit gelöscht.
+      </p>
+
+      <h2>Cookies, Tracking und Schriften</h2>
+      <p>
+        Diese Website verwendet keine Cookies und keine Analyse- oder Tracking-Tools. Alle Schriftarten werden direkt von unserem Server geladen – es findet keine Verbindung zu Google Fonts oder anderen Anbietern statt.
+      </p>
+
+      <h2>Kontaktaufnahme</h2>
+      <p>
+        Wenn du uns per E-Mail, Telefon oder WhatsApp kontaktierst, verarbeiten wir deine Angaben ausschliesslich zur Bearbeitung deiner Anfrage und zur Durchführung eines allfälligen Auftrags (Art. 6 Abs. 1 lit. b DSGVO). Wenn du das Anfrageformular nutzt, werden deine Angaben per E-Mail an uns weitergeleitet und auf dem Webserver nicht dauerhaft gespeichert. Unser E-Mail-Postfach liegt bei Google Workspace (Google Ireland Ltd.). Zum Schutz vor Missbrauch speichern wir beim Absenden einen Hash-Wert deiner IP-Adresse für höchstens 24 Stunden (Art. 6 Abs. 1 lit. f DSGVO).
+      </p>
+      <p>
+        Wenn du WhatsApp nutzt, gelten zusätzlich die Datenschutzbestimmungen von WhatsApp (Meta Platforms Ireland Ltd.).
+      </p>
+
+      <h2>YouTube-Videos</h2>
+      <p>
+        Auf der Seite „Hörproben & Videos“ sind Videos von YouTube (Google Ireland Ltd., Gordon House, Barrow Street, Dublin 4, Irland) eingebunden. Die Videos werden erst geladen, wenn du auf ein Vorschaubild klickst. Erst dann wird eine Verbindung zu YouTube hergestellt und es werden Daten (u. a. deine IP-Adresse) an YouTube übertragen. Wir nutzen dafür den erweiterten Datenschutzmodus (youtube-nocookie.com). Rechtsgrundlage ist deine Einwilligung durch den Klick (Art. 6 Abs. 1 lit. a DSGVO). Weitere Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung von Google</a>.
+      </p>
+
+      <h2>Links zu Facebook und YouTube</h2>
+      <p>Die Symbole für Facebook und YouTube sind einfache Links. Es werden keine Daten an diese Dienste übertragen, solange du die Links nicht anklickst.</p>
+
+      <h2>Deine Rechte</h2>
+      <p>
+        Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Wende dich dazu einfach an die oben genannten Kontaktdaten. Wenn du der Meinung bist, dass die Verarbeitung deiner Daten gegen das Datenschutzrecht verstösst, kannst du dich bei der österreichischen Datenschutzbehörde beschweren (<a href="https://www.dsb.gv.at" target="_blank" rel="noopener">www.dsb.gv.at</a>).
+      </p>
+    </div>
+  </section>
+</Base>

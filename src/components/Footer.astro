@@ -1,0 +1,125 @@
+---
+import { u } from '../lib/url';
+import Icon from './Icon.astro';
+import { nav, site } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="wrap footer__grid">
+    <div>
+      <p class="footer__brand">{site.name}</p>
+      <p>
+        {site.claim}<br />
+        Auftritte in Österreich, der Schweiz, Liechtenstein und Süddeutschland.
+      </p>
+      <div class="footer__social">
+        <a href={site.facebook} target="_blank" rel="noopener" aria-label="Alpen Express Didie auf Facebook"><Icon name="facebook" /></a>
+        <a href={site.youtube} target="_blank" rel="noopener" aria-label="Alpen Express Didie auf YouTube"><Icon name="youtube" /></a>
+      </div>
+    </div>
+
+    <nav aria-label="Seiten">
+      <p class="footer__title">Seiten</p>
+      <ul>
+        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        <li><a href={u('/kontakt/')}>Kontakt</a></li>
+      </ul>
+    </nav>
+
+    <address>
+      <p class="footer__title">Kontakt</p>
+      {site.person}<br />
+      {site.street}, {site.zip} {site.city}<br />
+      {site.region}, {site.country}<br />
+      <a href={site.phoneHref}>{site.phone}</a><br />
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+    </address>
+  </div>
+
+  <div class="wrap footer__bottom">
+    <span>© {year} {site.name}</span>
+    <span><a href={u('/impressum/')}>Impressum</a> · <a href={u('/datenschutz/')}>Datenschutz</a></span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: #0e0f12;
+    color: #a9a59c;
+    font-size: 0.95rem;
+    padding-top: 56px;
+  }
+
+  .footer a {
+    color: #e9e6df;
+    text-decoration: none;
+  }
+
+  .footer a:hover {
+    color: var(--gold);
+  }
+
+  .footer__grid {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  }
+
+  .footer__brand {
+    font-family: var(--display);
+    font-size: 1.9rem;
+    color: #fff;
+    margin-bottom: 0.3em;
+    line-height: 1;
+  }
+
+  .footer__title {
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 0.6em;
+  }
+
+  .footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 6px;
+  }
+
+  address {
+    font-style: normal;
+    line-height: 1.8;
+  }
+
+  .footer__social {
+    display: flex;
+    gap: 10px;
+  }
+
+  .footer__social a {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #1e2026;
+  }
+
+  .footer__social svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 40px;
+    padding-block: 20px;
+    border-top: 1px solid #23252b;
+    font-size: 0.875rem;
+  }
+</style>

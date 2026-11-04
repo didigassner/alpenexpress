@@ -1,0 +1,184 @@
+---
+import { u } from '../lib/url';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { repertoire } from '../data/repertoire';
+
+const slug = (s: string) =>
+  s.toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+const split = (song: string) => {
+  const [title, artist] = song.split(' – ');
+  return { title, artist };
+};
+---
+
+<Base
+  title="Repertoire – hunderte Lieder von Schlager bis Rock"
+  description="Das Repertoire von Alpen Express Didie: Partyhits, Austropop, Schweizer Mundart, Schlager, Volksmusik, Rock, Country, Evergreens und Hochzeitslieder. Wunschtitel werden gerne einstudiert."
+>
+  <PageHero
+    eyebrow="Repertoire"
+    title="Von AC/DC bis ins Zillertal"
+    lead="Stimmungsvoll, vielseitig, tanzbar – für jeden Geschmack und jedes Alter. Hier findest du einen Auszug aus dem Programm, das laufend erweitert wird."
+  >
+    <nav class="jump" aria-label="Stilrichtungen">
+      <ul class="tags">
+        {repertoire.map((g) => <li><a href={`#${slug(g.genre)}`}>{g.genre}</a></li>)}
+      </ul>
+    </nav>
+  </PageHero>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="search">
+        <label for="song-suche">Lied oder Interpret suchen</label>
+        <input id="song-suche" type="search" placeholder="z. B. Gabalier oder Hulapalu" autocomplete="off" />
+        <p class="search__empty" hidden>Nichts gefunden? Kein Problem – Wunschtitel studieren wir gerne für dich ein.</p>
+      </div>
+
+      <div class="genres">
+        {
+          repertoire.map((g) => (
+            <section class="card genre" id={slug(g.genre)} aria-labelledby={`${slug(g.genre)}-h`}>
+              <h2 id={`${slug(g.genre)}-h`}>{g.genre}</h2>
+              <ul>
+                {g.songs.map((s) => {
+                  const { title, artist } = split(s);
+                  return (
+                    <li>
+                      {title}
+                      {artist && <span> – {artist}</span>}
+                    </li>
+                  );
+                })}
+                <li class="more">und vieles mehr …</li>
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+
+      <div class="card wish">
+        <h2>Dein Lieblingslied fehlt?</h2>
+        <p>Gerne studieren wir deinen Wunschtitel ein, falls er noch nicht im Repertoire ist. Gib ihn uns bitte etwa vier Wochen vor deinem Fest bekannt.</p>
+        <a class="btn" href={u('/kontakt/')}>Wunschtitel anfragen</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const input = document.querySelector<HTMLInputElement>('#song-suche');
+  const empty = document.querySelector<HTMLElement>('.search__empty');
+  const genres = document.querySelectorAll<HTMLElement>('.genre');
+
+  input?.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    let total = 0;
+    genres.forEach((g) => {
+      let hits = 0;
+      g.querySelectorAll<HTMLElement>('li:not(.more)').forEach((li) => {
+        const match = !q || li.textContent!.toLowerCase().includes(q);
+        li.hidden = !match;
+        if (match) hits++;
+      });
+      g.hidden = hits === 0;
+      total += hits;
+    });
+    if (empty) empty.hidden = total > 0;
+  });
+</script>
+
+<style>
+  .jump {
+    margin-top: 28px;
+  }
+
+  .jump .tags li {
+    padding: 0;
+    background: rgb(255 255 255 / 0.06);
+    border-color: rgb(255 255 255 / 0.15);
+  }
+
+  .jump a {
+    display: block;
+    padding: 0.35em 0.9em;
+    color: #f2efe8;
+    text-decoration: none;
+  }
+
+  .jump a:hover {
+    color: var(--gold);
+  }
+
+  .search {
+    max-width: 520px;
+    margin-bottom: 32px;
+  }
+
+  .search label {
+    display: block;
+    font-weight: 650;
+    margin-bottom: 6px;
+  }
+
+  .search input {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 16px;
+    font: inherit;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+  }
+
+  .search__empty {
+    margin-top: 12px;
+    color: var(--muted);
+  }
+
+  .genres {
+    columns: 3 300px;
+    column-gap: 24px;
+  }
+
+  .genre {
+    break-inside: avoid;
+    margin-bottom: 24px;
+  }
+
+  .genre h2 {
+    font-size: 2rem;
+    color: var(--accent);
+  }
+
+  .genre ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .genre li {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--line);
+    font-weight: 550;
+  }
+
+  .genre li span {
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .genre li.more {
+    border: 0;
+    color: var(--muted);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .wish {
+    margin-top: 16px;
+    border-top: 4px solid var(--accent);
+  }
+</style>

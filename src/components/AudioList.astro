@@ -1,0 +1,71 @@
+---
+import { u } from '../lib/url';
+import type { Track } from '../data/media';
+interface Props {
+  tracks: Track[];
+}
+const { tracks } = Astro.props;
+---
+
+<ul class="audio-list">
+  {
+    tracks.map((t) => (
+      <li class="audio">
+        <div class="audio__meta">
+          <strong>{t.title}</strong>
+          {t.artist && <span>{t.artist}</span>}
+        </div>
+        <audio controls preload="none" src={u(`/audio/${t.file}`)}>
+          <a href={u(`/audio/${t.file}`)}>{t.title} anhören</a>
+        </audio>
+      </li>
+    ))
+  }
+</ul>
+
+<script>
+  // Nur eine Hörprobe gleichzeitig abspielen
+  document.addEventListener(
+    'play',
+    (e) => {
+      document.querySelectorAll('audio').forEach((a) => a !== e.target && a.pause());
+    },
+    true,
+  );
+</script>
+
+<style>
+  .audio-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  .audio {
+    display: grid;
+    gap: 8px;
+    padding: 14px 16px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+
+  .audio__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 10px;
+  }
+
+  .audio__meta span {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .audio audio {
+    width: 100%;
+    height: 40px;
+  }
+</style>

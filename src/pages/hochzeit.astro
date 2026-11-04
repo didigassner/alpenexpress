@@ -1,0 +1,114 @@
+---
+import { u } from '../lib/url';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import AudioList from '../components/AudioList.astro';
+import Icon from '../components/Icon.astro';
+import duo from '../assets/img/duo-didie-oskar.jpg';
+import { repertoire } from '../data/repertoire';
+
+const weddingSongs = repertoire.find((r) => r.genre === 'Hochzeit')?.songs ?? [];
+---
+
+<Base
+  title="Hochzeitsband & Hochzeitsmusik in Vorarlberg und der Schweiz"
+  description="Live-Musik für eure Hochzeit: Standesamt, Kirche, Apéro und Party mit dem Duo Alpen Express Didie & Oskar. Hintergrundmusik, Technik und Wunschlied für den Brauttanz inklusive."
+>
+  <PageHero eyebrow="Die Hochzeitsband" title="Live-Musik für euren grossen Tag" lead="Für ein gelungenes Fest – vom Ja-Wort bis zum letzten Tanz." />
+
+  <section class="section">
+    <div class="wrap grid grid--2 align-start">
+      <div>
+        <h2>Wir spielen gerne für euch</h2>
+        <div class="steps">
+          <div class="card"><h3>Standesamt</h3><p>Stimmungsvolle Musik für die Trauung.</p></div>
+          <div class="card"><h3>Kirche</h3><p>Feierliche Lieder wie „Ave Maria“ oder „Halleluja“.</p></div>
+          <div class="card"><h3>Abend</h3><p>Hintergrundmusik zum Essen, danach Party bis in die Morgenstunden.</p></div>
+        </div>
+      </div>
+      <div>
+        <h2>Pure Stimmung mit ausgelassenen Gästen</h2>
+        <p>
+          Feiert euer Fest mit dem Duo Alpen Express Didie, mit Oskar an der Gitarre, und geniesst einen unvergesslichen Abend mit toller Musik aus den vergangenen Jahrzehnten bis zu den aktuellen Hits.
+        </p>
+        <ul class="checklist">
+          <li>Leise Hintergrundmusik während des Apéros und der einzelnen Gänge ist selbstverständlich inklusive.</li>
+          <li>Wir stellen gerne die Technik für eure Showeinlagen und Präsentationen zur Verfügung.</li>
+          <li>Euer Wunschlied für den Brauttanz studieren wir gerne ein – bitte sagt uns etwa vier Wochen vor dem Termin Bescheid.</li>
+        </ul>
+        <p>
+          Lasst euch nicht überraschen, sondern überzeugt euch selbst bei einem unserer Live-Auftritte – wir laden euch gerne ein!
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white">
+    <div class="wrap grid grid--2 align-start">
+      <div>
+        <span class="eyebrow">Reinhören</span>
+        <h2>Hochzeitslieder</h2>
+        <AudioList
+          tracks={[
+            { title: 'Auf das, was da noch kommt', artist: 'Lotte & Max Giesinger', file: 'auf-das-was-da-noch-kommt.mp3' },
+            { title: 'So soll es bleiben', artist: 'Ich + Ich', file: 'so-soll-es-bleiben.mp3' },
+          ]}
+        />
+        <p class="small">Weitere Lieder aus dem Hochzeitsrepertoire:</p>
+        <ul class="tags">
+          {weddingSongs.map((s) => <li>{s}</li>)}
+        </ul>
+      </div>
+      <div>
+        <Image src={duo} alt="Duo Alpen Express: Didie und Oskar" class="photo" widths={[480, 800, 1075]} sizes="(max-width: 760px) 100vw, 560px" />
+        <blockquote class="card wedding-quote">
+          „Es hat jeder geschwärmt, wie angenehm und gut die Musik war – also nicht zu laut!“
+          <footer>Juliane, nach ihrer Hochzeit</footer>
+        </blockquote>
+        <p>Wir freuen uns auf eure Anfrage – und darauf, euer Fest zu einem unvergesslichen Erlebnis zu machen.<br /><strong>Euer Didie & Oskar</strong></p>
+        <a class="btn" href={u('/kontakt/?anlass=Hochzeit')}>Hochzeit anfragen <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .align-start {
+    align-items: start;
+  }
+
+  .steps {
+    display: grid;
+    gap: 12px;
+  }
+
+  .steps .card {
+    border-left: 4px solid var(--accent);
+  }
+
+  .steps h3 {
+    margin-bottom: 0.2em;
+  }
+
+  .steps p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .small {
+    margin-top: 24px;
+    color: var(--muted);
+  }
+
+  .wedding-quote {
+    margin: 24px 0;
+    font-size: 1.1rem;
+  }
+
+  .wedding-quote footer {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+</style>

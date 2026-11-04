@@ -1,0 +1,52 @@
+---
+import { u } from '../lib/url';
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+---
+
+<section class="section section--dark contact-band" aria-labelledby="kontakt-band-titel">
+  <div class="wrap contact-band__inner">
+    <div>
+      <span class="eyebrow">Unverbindlich & kostenlos</span>
+      <h2 id="kontakt-band-titel">Dein Fest. Unsere Musik.</h2>
+      <p class="lead">
+        Erzähl mir von deiner Feier – ich berate dich gerne und schicke dir ein persönliches Angebot. Beliebte Termine sind schnell vergeben, also melde dich am besten früh.
+      </p>
+    </div>
+    <div class="contact-band__actions">
+      <a class="btn" href={u('/kontakt/')}>Jetzt Anfrage stellen <Icon name="arrow" /></a>
+      <a class="btn btn--ghost" href={site.phoneHref}><Icon name="phone" /> {site.phone}</a>
+      <a class="btn btn--ghost" href={site.whatsappHref} target="_blank" rel="noopener"><Icon name="whatsapp" /> WhatsApp</a>
+      <a class="btn btn--ghost" href={`mailto:${site.email}`}><Icon name="mail" /> {site.email}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-band {
+    background:
+      radial-gradient(1200px 400px at 90% 0%, rgb(200 52 27 / 0.35), transparent 60%),
+      var(--ink);
+  }
+
+  .contact-band__inner {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+    align-items: center;
+  }
+
+  .contact-band__actions {
+    display: grid;
+    gap: 12px;
+  }
+
+  .contact-band__actions .btn {
+    justify-content: flex-start;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-band__actions .btn:first-child {
+    justify-content: center;
+  }
+</style>

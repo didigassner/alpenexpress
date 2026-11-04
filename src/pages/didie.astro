@@ -1,0 +1,102 @@
+---
+import { u } from '../lib/url';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import didie from '../assets/img/didie-martin.jpg';
+
+const traits = ['Aktuell', 'Top-Repertoire', 'Vielseitig', 'Professionell', 'Zuverlässig', 'Sympathisch', 'Humorvoll', 'Empfehlenswert'];
+
+const tv = ['Rudi Carrell Show', 'Die Goldene Eins', 'Tritsch Tratsch (ORF)', 'Wunschbox', '3nach9', 'Aktuelle Schaubude', 'Musik für Sie', 'Traumshow', 'Aber bitte mit Schlager', 'Barbara Karlich Show'];
+
+const stations = ['ORF', 'TW1', '3sat', 'Sat.1', 'SF 2', 'RTL', 'WDR'];
+
+const events = [
+  'Bümplitzer Chilbi, Bern', 'Chilbi Eschen (FL)', 'Stadtfest Biberach', 'Open Air Klostertal', 'Zuger Messe', 'Dornbirner Messe', 'Musikmesse Innsbruck', 'Kulturhaus Dornbirn', 'Bremer Stadthalle', 'Kilbi Lustenau', 'Kilbi Damüls', 'Burghotel Oberlech', 'Kuhstall Lenzerheide', 'Schützenhaus Winterthur', 'Enzianhütte Oberstaufen', 'Dampfbierbrauerei Oberstdorf', 'Golfclub Oberstaufen', 'Funkenzunft Klösterle', 'Funkenzunft Hohenems', 'Gemeinde Silbertal', 'Gemeinde Vandans', 'Schwimmbad Braz', 'FC Rebstein', 'FC Solothurn', 'FC Fussach', 'FC Eschen', 'SOB-Diplomball Rankweil',
+];
+
+const clients = ['Siemens', 'Mercedes', 'Nestlé', 'Allianz', 'TUI', 'Ford', 'Media Markt', 'McDonald’s', 'Johnson & Johnson', 'Edeka', 'Eduscho', 'Suchard', 'Granini', 'Bausparkasse Schwäbisch Hall', 'Nord/LB', 'WestLB', 'ISPO', 'Kärnten Tourismus', 'Flughafen Kärnten', 'Fulda Reifen', 'Banner Batterien', 'ALU Tec', 'Nachbaur Reisen', 'KSV Götzis', 'Mercedes Schneider Dornbirn'];
+---
+
+<Base
+  title="Über Didie Martin – Sänger, Entertainer & Elvis-Interpret"
+  description="Didie Martin alias Alpen Express Didie: Partymusiker aus Vorarlberg, bekannt aus der Rudi Carrell Show und zahlreichen TV-Auftritten. Referenzen, Kunden und Elvis-Show."
+>
+  <PageHero eyebrow="Über mich" title="Didie Martin" lead="Der Partykracher aus Vorarlberg – bekannt aus Funk und Fernsehen und für beste Stimmung." />
+
+  <section class="section">
+    <div class="wrap grid grid--2 align-start">
+      <div>
+        <h2>Musik für Jung und Alt</h2>
+        <p>
+          Alpen Express Didie spielt solo oder im Duo mit Oskar an der Gitarre die beliebtesten Rockklassiker, aber auch die grossen Partyknaller, Austropop, bekannte Schweizer Mundartlieder, Hits der 50er- bis 90er-Jahre, aktuelle Charts, Oldies, Evergreens, Schlager, Oberkrainer, Country, Tanzmusik und vieles mehr.
+        </p>
+        <p>
+          Immer wieder ein Genuss: Wenn Didie auf Wunsch des Publikums Songs von Elvis Presley singt – so, wie er es schon in zahlreichen Fernsehsendungen getan hat.
+        </p>
+        <ul class="tags">
+          {traits.map((t) => <li>{t}</li>)}
+        </ul>
+      </div>
+      <Image src={didie} alt="Porträt von Didie Martin mit Schirmmütze" class="photo" widths={[480, 800, 1200]} sizes="(max-width: 760px) 100vw, 560px" />
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="wrap grid grid--2 align-start">
+      <div>
+        <span class="eyebrow">Elvis-Show</span>
+        <h2>Einer der bekanntesten Elvis-Interpreten</h2>
+        <p>
+          Didie gilt nach wie vor als einer der besten und bekanntesten Elvis-Presley-Interpreten im deutschsprachigen Raum. Bekannt wurde er durch die legendäre Rudi Carrell Show – vergleichbar mit heutigen Castingshows. Bis heute wird die Elvis-Show für kleine und grosse Anlässe eigens gebucht.
+        </p>
+      </div>
+      <div>
+        <span class="eyebrow">Funk & Fernsehen</span>
+        <h2>TV-Auftritte</h2>
+        <ul class="tags">
+          {tv.map((t) => <li>{t}</li>)}
+        </ul>
+        <p class="stations">Gesendet u. a. auf {stations.join(', ')}.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">Referenzen</span>
+      <h2>Öffentliche Auftritte (Auswahl)</h2>
+      <ul class="tags">
+        {events.map((e) => <li>{e}</li>)}
+      </ul>
+
+      <h2 class="spaced">Kunden (Auswahl)</h2>
+      <p class="lead">Zu meinen langjährigen Kunden zählen regionale, nationale und internationale Veranstalter und Unternehmen aus ganz Europa.</p>
+      <ul class="tags">
+        {clients.map((c) => <li>{c}</li>)}
+      </ul>
+
+      <h2 class="spaced">Private Feiern</h2>
+      <p class="lead">Hochzeiten, Geburtstage, Jubiläen und Familienfeste – einen Eindruck davon findest du im <a href={u('/rueckblick/')}>Rückblick</a>.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .align-start {
+    align-items: start;
+  }
+
+  .tags {
+    margin-top: 20px;
+  }
+
+  .stations {
+    margin-top: 20px;
+    color: #bdb8ad;
+  }
+
+  .spaced {
+    margin-top: 56px;
+  }
+</style>

@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import AudioList from '../components/AudioList.astro';
+import VideoGrid from '../components/VideoGrid.astro';
+import { audio, videos } from '../data/media';
+---
+
+<Base
+  title="Hörproben & Videos"
+  description="Hörproben und Live-Videos von Alpen Express Didie: Party, Austropop, Schlager, Balladen, Hochzeits- und Weihnachtslieder zum Reinhören."
+>
+  <PageHero eyebrow="Mediathek" title="Hörproben & Videos" lead="Spiel, Spass und stimmungsvolle, tanzbare Musik für Jung und Alt. Wegen des grossen Repertoires kann hier nur ein kleiner Ausschnitt gezeigt werden – viel Spass beim Reinhören!">
+    <div class="btn-row hero-links">
+      <a class="btn" href="#hoerproben">Hörproben</a>
+      <a class="btn btn--ghost" href="#videos">Videos</a>
+    </div>
+  </PageHero>
+
+  <section class="section" id="hoerproben" aria-labelledby="hoerproben-h">
+    <div class="wrap">
+      <h2 id="hoerproben-h">Hörproben</h2>
+      <div class="audio-genres">
+        {
+          audio.map((g) => (
+            <div>
+              <h3>{g.genre}</h3>
+              <AudioList tracks={g.tracks} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--white" id="videos" aria-labelledby="videos-h">
+    <div class="wrap">
+      <h2 id="videos-h">Videos</h2>
+      <p class="lead">Stimmung und gute Laune mit Alpen Express Didie – live von Festen, Feiern und aus dem Fernsehen.</p>
+      <VideoGrid videos={videos} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero-links {
+    margin-top: 24px;
+  }
+
+  .audio-genres {
+    display: grid;
+    gap: 32px 24px;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  }
+
+  .audio-genres h3 {
+    color: var(--accent);
+  }
+</style>
