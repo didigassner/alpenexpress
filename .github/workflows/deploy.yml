@@ -1,0 +1,80 @@
+name: Build & Deploy
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Nur anzeigen, was sich ändern würde
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  # Pull Requests werden nur gebaut und bekommen keinen Zugriff auf Secrets.
+  build:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # Das Environment "production" ist auf den Branch main beschränkt und hält den SSH-Schlüssel.
+    environment: production
+    concurrency: production
+    env:
+      SSH_HOST: ${{ vars.SSH_HOST }}
+      SSH_PORT: ${{ vars.SSH_PORT }}
+      SSH_USER: ${{ vars.SSH_USER }}
+      DRY_RUN: ${{ inputs.dry_run == true }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+      - name: SSH einrichten
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ vars.SSH_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      # Der Schlüssel ist serverseitig auf den Webroot beschränkt, daher Ziel ".".
+      # .well-known bleibt erhalten, falls der Hoster es für die Zertifikatserneuerung braucht.
+      - name: Hochladen
+        run: |
+          flags=()
+          if [ "$DRY_RUN" = "true" ]; then flags+=(--dry-run); fi
+          rsync -rlpzc --chmod=D755,F644 --delete-delay --delay-updates --exclude=.well-known \
+            --itemize-changes "${flags[@]}" \
+            -e "ssh -i $HOME/.ssh/deploy_key -p $SSH_PORT -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes" \
+            dist/ "$SSH_USER@$SSH_HOST:."
+
+      - name: Live-Seite prüfen
+        if: env.DRY_RUN != 'true'
+        run: scripts/smoke-test.sh
