@@ -6,6 +6,8 @@ ErrorDocument 404 /404.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # Redirect-Ziele immer absolut: Der Webserver liegt hinter einem Proxy und kennt Schema und Port nicht
+
   # HTTPS und www erzwingen
   RewriteCond %{HTTPS} off [OR]
   RewriteCond %{HTTP_HOST} !^www\. [NC]
@@ -14,56 +16,63 @@ ErrorDocument 404 /404.html
   # Alte WordPress-Endpunkte: endgültig weg
   RewriteRule ^(wp-admin|wp-login\.php|xmlrpc\.php|wp-json|wp-includes|wp-cron\.php)(/.*)?$ - [G,L]
 
+  # Fehlenden Schrägstrich selbst ergänzen: Hinter dem Proxy des Hosters baut mod_dir sonst http://…:443/
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^(.*[^/])$ https://www.alpenexpress.at/$1/ [R=301,L]
+
   # Einzige PHP-Datei ist das Anfrageformular: übrig gebliebene WordPress-Dateien sind nicht mehr ausführbar
   RewriteRule ^anfrage\.php$ - [L]
   RewriteRule \.php$ - [G,L]
 
   # Alte Seiten -> neue Seiten
-  RewriteRule ^start/?$ / [R=301,L]
-  RewriteRule ^band-2/?$ /didie/ [R=301,L]
-  RewriteRule ^oskar/?$ /duo/ [R=301,L]
-  RewriteRule ^test/?$ /hochzeit/ [R=301,L]
-  RewriteRule ^programm/?$ /mediathek/ [R=301,L]
-  RewriteRule ^videos/?$ /mediathek/#videos [R=301,L,NE]
-  RewriteRule ^(programm-2|termine)/?$ /repertoire/ [R=301,L]
-  RewriteRule ^equipment/?$ / [R=301,L]
-  RewriteRule ^(feed|comments/feed|category/.*|author/.*|page/.*)/?$ /rueckblick/ [R=301,L]
+  RewriteRule ^start/?$ https://www.alpenexpress.at/ [R=301,L]
+  RewriteRule ^band-2/?$ https://www.alpenexpress.at/didie/ [R=301,L]
+  RewriteRule ^oskar/?$ https://www.alpenexpress.at/duo/ [R=301,L]
+  RewriteRule ^test/?$ https://www.alpenexpress.at/hochzeit/ [R=301,L]
+  RewriteRule ^programm/?$ https://www.alpenexpress.at/mediathek/ [R=301,L]
+  RewriteRule ^videos/?$ https://www.alpenexpress.at/mediathek/#videos [R=301,L,NE]
+  RewriteRule ^(programm-2|termine)/?$ https://www.alpenexpress.at/repertoire/ [R=301,L]
+  RewriteRule ^equipment/?$ https://www.alpenexpress.at/ [R=301,L]
+  RewriteRule ^(feed|comments/feed|category/.*|author/.*|page/.*)/?$ https://www.alpenexpress.at/rueckblick/ [R=301,L]
 
   # Alte Blogbeiträge -> Rückblick
-  RewriteRule ^eine-traumhochzeit-2/?$ /rueckblick/traumhochzeit-in-flaach/ [R=301,L]
-  RewriteRule ^01-august-feier-in-der-bergwelt/?$ /rueckblick/1-august-feier-in-der-bergwelt/ [R=301,L]
-  RewriteRule ^top-party-auf-dem-campingplatz/?$ /rueckblick/party-auf-dem-campingplatz-altnau/ [R=301,L]
-  RewriteRule ^st-anna-kapelle-sanierungsarbeiten-abgeschlossen/?$ /rueckblick/st-anna-kapelle-schlins/ [R=301,L]
-  RewriteRule ^fruehschoppen-und-abendprogramm-an-einem-tag-absolviert/?$ /rueckblick/fruehschoppen-und-abendprogramm/ [R=301,L]
-  RewriteRule ^party-beim-fc-oberdorf-ch/?$ /rueckblick/party-beim-fc-oberdorf/ [R=301,L]
-  RewriteRule ^traumhaftes-wetter-beim-wolfurter-markt/?$ /rueckblick/wolfurter-markt/ [R=301,L]
-  RewriteRule ^fasching-beim-feldkircher-pensionistenverband/?$ /rueckblick/fasching-pensionistenverband-feldkirch/ [R=301,L]
-  RewriteRule ^super-party-beim-fc-alberschwende-2/?$ /rueckblick/saisonabschluss-fc-alberschwende/ [R=301,L]
-  RewriteRule ^top-stimmung-in-zuerich/?$ /rueckblick/oktoberfest-zuerich/ [R=301,L]
-  RewriteRule ^da-gings-ab-oktoberfest-in-sarmenstorf-2018/?$ /rueckblick/oktoberfest-sarmenstorf-2018/ [R=301,L]
-  RewriteRule ^top-stimmung-am-seefest-in-horn/?$ /rueckblick/seefest-horn/ [R=301,L]
-  RewriteRule ^eine-traumhochzeit/?$ /rueckblick/traumhochzeit-in-sonntag/ [R=301,L]
-  RewriteRule ^01-august-2018/?$ /rueckblick/1-august-2018-aesch/ [R=301,L]
-  RewriteRule ^hochzeit-bei-corinne-und-marco/?$ /rueckblick/hochzeit-corinne-und-marco/ [R=301,L]
-  RewriteRule ^weihnachtsparty-bei-zuers-ag/?$ /rueckblick/weihnachtsfeier-zuers/ [R=301,L]
-  RewriteRule ^(jetzt-neu-willst-du-kannst-du|neue-videos-alpen-express-didie-2017)/?$ /mediathek/ [R=301,L]
+  RewriteRule ^eine-traumhochzeit-2/?$ https://www.alpenexpress.at/rueckblick/traumhochzeit-in-flaach/ [R=301,L]
+  RewriteRule ^01-august-feier-in-der-bergwelt/?$ https://www.alpenexpress.at/rueckblick/1-august-feier-in-der-bergwelt/ [R=301,L]
+  RewriteRule ^top-party-auf-dem-campingplatz/?$ https://www.alpenexpress.at/rueckblick/party-auf-dem-campingplatz-altnau/ [R=301,L]
+  RewriteRule ^st-anna-kapelle-sanierungsarbeiten-abgeschlossen/?$ https://www.alpenexpress.at/rueckblick/st-anna-kapelle-schlins/ [R=301,L]
+  RewriteRule ^fruehschoppen-und-abendprogramm-an-einem-tag-absolviert/?$ https://www.alpenexpress.at/rueckblick/fruehschoppen-und-abendprogramm/ [R=301,L]
+  RewriteRule ^party-beim-fc-oberdorf-ch/?$ https://www.alpenexpress.at/rueckblick/party-beim-fc-oberdorf/ [R=301,L]
+  RewriteRule ^traumhaftes-wetter-beim-wolfurter-markt/?$ https://www.alpenexpress.at/rueckblick/wolfurter-markt/ [R=301,L]
+  RewriteRule ^fasching-beim-feldkircher-pensionistenverband/?$ https://www.alpenexpress.at/rueckblick/fasching-pensionistenverband-feldkirch/ [R=301,L]
+  RewriteRule ^super-party-beim-fc-alberschwende-2/?$ https://www.alpenexpress.at/rueckblick/saisonabschluss-fc-alberschwende/ [R=301,L]
+  RewriteRule ^top-stimmung-in-zuerich/?$ https://www.alpenexpress.at/rueckblick/oktoberfest-zuerich/ [R=301,L]
+  RewriteRule ^da-gings-ab-oktoberfest-in-sarmenstorf-2018/?$ https://www.alpenexpress.at/rueckblick/oktoberfest-sarmenstorf-2018/ [R=301,L]
+  RewriteRule ^top-stimmung-am-seefest-in-horn/?$ https://www.alpenexpress.at/rueckblick/seefest-horn/ [R=301,L]
+  RewriteRule ^eine-traumhochzeit/?$ https://www.alpenexpress.at/rueckblick/traumhochzeit-in-sonntag/ [R=301,L]
+  RewriteRule ^01-august-2018/?$ https://www.alpenexpress.at/rueckblick/1-august-2018-aesch/ [R=301,L]
+  RewriteRule ^hochzeit-bei-corinne-und-marco/?$ https://www.alpenexpress.at/rueckblick/hochzeit-corinne-und-marco/ [R=301,L]
+  RewriteRule ^weihnachtsparty-bei-zuers-ag/?$ https://www.alpenexpress.at/rueckblick/weihnachtsfeier-zuers/ [R=301,L]
+  RewriteRule ^(jetzt-neu-willst-du-kannst-du|neue-videos-alpen-express-didie-2017)/?$ https://www.alpenexpress.at/mediathek/ [R=301,L]
 
   # Alte Audio-Dateien -> neue Pfade
-  RewriteRule ^wp-content/uploads/2021/04/AUF-UNS-AE-0321\.mp3$ /audio/auf-uns.mp3 [R=301,L,NC]
-  RewriteRule ^wp-content/uploads/2021/04/Auf-das-was-da-n-kommt-AE21\.mp3$ /audio/auf-das-was-da-noch-kommt.mp3 [R=301,L,NC]
-  RewriteRule ^wp-content/uploads/2021/04/WHAT-YOUR-PROPOSING-AE-0421\.mp3$ /audio/what-youre-proposing.mp3 [R=301,L,NC]
-  RewriteRule ^wp-content/uploads/2021/04/DEM-LAND-TIROL-AE-0421\.mp3$ /audio/dem-land-tirol-die-treue.mp3 [R=301,L,NC]
-  RewriteRule ^wp-content/ / [R=301,L]
+  RewriteRule ^wp-content/uploads/2021/04/AUF-UNS-AE-0321\.mp3$ https://www.alpenexpress.at/audio/auf-uns.mp3 [R=301,L,NC]
+  RewriteRule ^wp-content/uploads/2021/04/Auf-das-was-da-n-kommt-AE21\.mp3$ https://www.alpenexpress.at/audio/auf-das-was-da-noch-kommt.mp3 [R=301,L,NC]
+  RewriteRule ^wp-content/uploads/2021/04/WHAT-YOUR-PROPOSING-AE-0421\.mp3$ https://www.alpenexpress.at/audio/what-youre-proposing.mp3 [R=301,L,NC]
+  RewriteRule ^wp-content/uploads/2021/04/DEM-LAND-TIROL-AE-0421\.mp3$ https://www.alpenexpress.at/audio/dem-land-tirol-die-treue.mp3 [R=301,L,NC]
+  RewriteRule ^wp-content/ https://www.alpenexpress.at/ [R=301,L]
 </IfModule>
 
 # Sicherheits-Header
 <IfModule mod_headers.c>
-  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "DENY"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=()"
   Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self'; frame-src https://www.youtube-nocookie.com; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+  # Nur für Browser: HTML immer neu prüfen. Der Varnish des Hosters ignoriert Cache-Control (siehe README).
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
 </IfModule>
 
 # Caching: gehashte Assets lange, HTML kurz

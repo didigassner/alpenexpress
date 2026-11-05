@@ -21,19 +21,22 @@ npm run build      # erzeugt die fertige Website im Ordner dist/
 | Rückblick-Beiträge | `src/content/rueckblick/*.md` – neue Datei anlegen, Bild in `src/assets/rueckblick/` |
 | Seitentexte | `src/pages/*.astro` |
 
-## Veröffentlichen (bisheriger Hoster)
+## Veröffentlichen
 
-Einmalig: `.deploy.env.example` nach `.deploy.env` kopieren und Server, Benutzer und Webroot eintragen (kein Passwort – das fragt `sftp` im Terminal ab, oder SSH-Schlüssel beim Hoster hinterlegen).
+Jeder Push auf `main` geht automatisch live (`.github/workflows/deploy.yml`): bauen, per rsync hochladen, danach prüft `scripts/smoke-test.sh` die Live-Seite. Schlägt etwas fehl, schickt GitHub eine Mail. Rückgängig machen: `git revert` und pushen.
+
+- **Pull Requests** werden nur gebaut, ohne Zugriff auf Secrets.
+- **Trockenlauf:** unter Actions → Build & Deploy → Run workflow; zeigt, was sich ändern würde.
+- **Zugang:** Der SSH-Schlüssel liegt als Secret `SSH_PRIVATE_KEY` im GitHub-Environment `production` (nur Branch `main`), `SSH_HOST`, `SSH_PORT`, `SSH_USER` und `SSH_KNOWN_HOSTS` als Variablen. Auf dem Server ist er per `rrsync` in `~/.ssh/authorized_keys` auf den Webroot beschränkt: nur schreiben, kein Shell-Zugang, keine anderen Ordner.
+- **Achtung:** rsync läuft mit `--delete`. Was nicht im Build liegt, wird im Webroot gelöscht (ausser `.well-known`).
+
+Von Hand geht es weiterhin per SFTP, dafür `.deploy.env.example` nach `.deploy.env` kopieren:
 
 ```bash
 scripts/deploy.sh test     # Verbindung prüfen, Webroot auflisten
-scripts/deploy.sh backup   # alten Webroot nach backup/ sichern (vor dem ersten Upload!)
-scripts/deploy.sh dev      # Vorschau nach https://www.alpenexpress.at/dev/ (alte Seite bleibt)
-scripts/deploy.sh upload   # finale Version in den Webroot (ersetzt die alte Seite, fragt nach)
+scripts/deploy.sh upload   # bauen und hochladen, fragt vorher nach
 ```
 
-Die Vorschau (`npm run build:dev`) läuft unter `/dev/`, ist per `noindex` von Suchmaschinen ausgeschlossen und bringt eine eigene `.htaccess` mit (`deploy/htaccess-dev`), damit die WordPress-Regeln im Hauptverzeichnis unberührt bleiben. Nach dem Umstieg den Ordner `dev/` beim Hoster wieder löschen.
+Vor dem Webserver liegt der Varnish-Cache von easyname. Er ignoriert sämtliche `Cache-Control`-Header (getestet: `no-store`, `private`, `s-maxage=0`), nur `Set-Cookie` umgeht ihn. Änderungen werden deshalb erst sichtbar, wenn der Cache im Controlpanel geleert wird oder abläuft: Webhosting → Webserver Einstellungen → Varnish → Verwalten.
 
-Die WordPress-Datenbank sichert `backup` nicht – die bitte im Hoster-Panel (phpMyAdmin) exportieren. Nach erfolgreichem Umstieg die alten WordPress-Dateien und die Datenbank beim Hoster löschen; bis dahin blockiert die `.htaccess` jede `.php`-Datei ausser `anfrage.php`.
-
-Die `.htaccess` leitet alle alten WordPress-URLs per 301 auf die neuen Seiten um (wichtig für Google), sperrt `wp-admin`/`xmlrpc.php` mit 410, erzwingt HTTPS + www und setzt Sicherheits- und Cache-Header. Sie setzt einen Apache-Server mit `mod_rewrite` voraus.
+Die `.htaccess` leitet alle alten WordPress-URLs per 301 auf die neuen Seiten um (wichtig für Google), sperrt `wp-admin`/`xmlrpc.php` und alle `.php`-Dateien ausser `anfrage.php` mit 410, erzwingt HTTPS + www und setzt Sicherheits- und Cache-Header. Redirect-Ziele stehen absolut drin, weil der Webserver hinter dem Proxy des Hosters Schema und Port nicht kennt. Sie setzt einen Apache-Server mit `mod_rewrite` voraus.
