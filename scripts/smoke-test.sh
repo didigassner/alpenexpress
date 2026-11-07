@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Prüft die Live-Seite nach einem Deploy. "no-cache" reicht der Varnish des Hosters
-# zum Webserver durch, der Test sieht also den Stand auf dem Server, nicht den Cache.
+# Prüft die Live-Seite nach einem Deploy. "no-cache" sorgt dafür, dass der Test den
+# Stand auf dem Server sieht, auch falls der Varnish des Hosters wieder aktiv wird.
 
 set -uo pipefail
 
