@@ -27,7 +27,7 @@ Jeder Push auf `main` geht automatisch live (`.github/workflows/deploy.yml`): ba
 
 - **Pull Requests** werden nur gebaut, ohne Zugriff auf Secrets.
 - **Trockenlauf:** unter Actions → Build & Deploy → Run workflow; zeigt, was sich ändern würde.
-- **Zugang:** Der SSH-Schlüssel liegt als Secret `SSH_PRIVATE_KEY` im GitHub-Environment `production` (nur Branch `main`), `SSH_HOST`, `SSH_PORT`, `SSH_USER` und `SSH_KNOWN_HOSTS` als Variablen. Auf dem Server ist er per `rrsync` in `~/.ssh/authorized_keys` auf den Webroot beschränkt: nur schreiben, kein Shell-Zugang, keine anderen Ordner.
+- **Zugang:** `SSH_PRIVATE_KEY`, `SSH_HOST`, `SSH_PORT`, `SSH_USER` und `SSH_KNOWN_HOSTS` liegen als Secrets im GitHub-Environment `production` (nur Branch `main`). Keine Variablen verwenden: Die Actions-Logs dieses Repos sind öffentlich, und nur Secrets werden darin maskiert. Auf dem Server ist er per `rrsync` in `~/.ssh/authorized_keys` auf den Webroot beschränkt: nur schreiben, kein Shell-Zugang, keine anderen Ordner.
 - **Achtung:** rsync läuft mit `--delete`. Was nicht im Build liegt, wird im Webroot gelöscht (ausser `.well-known`).
 
 Von Hand geht es weiterhin per SFTP, dafür `.deploy.env.example` nach `.deploy.env` kopieren:
@@ -37,6 +37,6 @@ scripts/deploy.sh test     # Verbindung prüfen, Webroot auflisten
 scripts/deploy.sh upload   # bauen und hochladen, fragt vorher nach
 ```
 
-Vor dem Webserver liegt der Varnish-Cache von easyname. Er ignoriert sämtliche `Cache-Control`-Header (getestet: `no-store`, `private`, `s-maxage=0`), nur `Set-Cookie` umgeht ihn. Änderungen werden deshalb erst sichtbar, wenn der Cache im Controlpanel geleert wird oder abläuft: Webhosting → Webserver Einstellungen → Varnish → Verwalten.
+Der Varnish-Cache von easyname ist deaktiviert, Änderungen sind also sofort sichtbar. Wird er wieder eingeschaltet: Er ignoriert sämtliche `Cache-Control`-Header (getestet: `no-store`, `private`, `s-maxage=0`), nur `Set-Cookie` umgeht ihn. Änderungen erscheinen dann erst, wenn der Cache im Controlpanel geleert wird oder abläuft: Webhosting → Webserver Einstellungen → Varnish → Verwalten.
 
 Die `.htaccess` leitet alle alten WordPress-URLs per 301 auf die neuen Seiten um (wichtig für Google), sperrt `wp-admin`/`xmlrpc.php` und alle `.php`-Dateien ausser `anfrage.php` mit 410, erzwingt HTTPS + www und setzt Sicherheits- und Cache-Header. Redirect-Ziele stehen absolut drin, weil der Webserver hinter dem Proxy des Hosters Schema und Port nicht kennt. Sie setzt einen Apache-Server mit `mod_rewrite` voraus.
