@@ -14,7 +14,7 @@ const LIMIT_TOTAL = 50;    // pro 24 Stunden, Schutz vor Mail-Flut aus vielen Qu
 const MIN_FILL_MS = 3000;  // schneller füllt kein Mensch das Formular aus
 
 const OCCASIONS = ['Hochzeit', 'Geburtstag', 'Firmenfeier', 'Weihnachtsfeier', 'Vereinsfest / Zeltfest', 'Jubiläum', 'Anderer Anlass'];
-const LINEUPS = ['Solo', 'Duo', 'Noch offen – bitte beraten'];
+const LINEUPS = ['Duo', 'Trio', 'Solo (auf Anfrage)', 'Noch offen – bitte beraten'];
 
 function respond(int $status, string $error = ''): void
 {

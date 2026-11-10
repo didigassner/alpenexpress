@@ -6,7 +6,6 @@ import Icon from '../components/Icon.astro';
 import Testimonials from '../components/Testimonials.astro';
 import AudioList from '../components/AudioList.astro';
 import didie from '../assets/img/didie-martin.jpg';
-import duo from '../assets/img/duo-didie-oskar.jpg';
 import { site } from '../data/site';
 
 const occasions = [
@@ -29,16 +28,16 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
 ---
 
 <Base
-  title="Alpen Express Didie – Partyband & Alleinunterhalter aus Vorarlberg"
-  description="Live-Musik für Hochzeiten, Geburtstage, Firmenfeiern und Zeltfeste: Alpen Express Didie spielt solo oder im Duo in Vorarlberg, der Schweiz, Liechtenstein und Süddeutschland. Jetzt unverbindlich anfragen."
+  title="Alpen Express Didie – Partyband aus Vorarlberg im Duo & Trio"
+  description="Live-Musik für Hochzeiten, Geburtstage, Firmenfeiern und Zeltfeste: Alpen Express Didie spielt im Duo oder Trio in Vorarlberg, der Schweiz, Liechtenstein und Süddeutschland. Jetzt unverbindlich anfragen."
 >
   <section class="hero">
     <Image src={didie} alt="Didie Martin von Alpen Express" class="hero__img" widths={[640, 1024, 1600, 2200]} sizes="100vw" loading="eager" fetchpriority="high" />
     <div class="wrap hero__content">
-      <span class="eyebrow">Partyband & Alleinunterhalter aus Vorarlberg</span>
+      <span class="eyebrow">Partyband aus Vorarlberg – im Duo oder Trio</span>
       <h1>Musik, über die deine Gäste noch lange reden.</h1>
       <p class="lead">
-        Alpen Express Didie bringt Stimmung auf Hochzeiten, Geburtstage, Firmenfeiern und Zeltfeste – solo oder im Duo, in Österreich, der Schweiz, Liechtenstein und Süddeutschland.
+        Alpen Express Didie bringt Stimmung auf Hochzeiten, Geburtstage, Firmenfeiern und Zeltfeste – im Duo oder Trio, in Österreich, der Schweiz, Liechtenstein und Süddeutschland.
       </p>
       <div class="btn-row">
         <a class="btn" href={u('/kontakt/')}>Kostenloses Angebot anfragen <Icon name="arrow" /></a>
@@ -53,7 +52,7 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
         <span class="eyebrow">Herzlich willkommen</span>
         <h2>Hey, ich bin Didie!</h2>
         <p>
-          Didie Martin, alias Alpen Express Didie. Seit vielen Jahren stehe ich mit Gesang und Keyboard auf der Bühne – mit einem Ziel: dass dein Fest ein voller Erfolg wird. Ob als Alleinunterhalter oder im Duo mit Oskar an der Gitarre, ich lebe leidenschaftlich für die Musik, weil sie
+          Didie Martin, alias Alpen Express Didie. Seit vielen Jahren stehe ich mit Gesang und Keyboard auf der Bühne – mit einem Ziel: dass dein Fest ein voller Erfolg wird. Ob im Duo mit Gitarrist oder im Trio mit Band, ich lebe leidenschaftlich für die Musik, weil sie
         </p>
         <ul class="checklist">
           <li>glücklich macht,</li>
@@ -66,7 +65,7 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
         </p>
         <a href={u('/didie/')}>Mehr über mich <Icon name="arrow" class="inline-icon" /></a>
       </div>
-      <Image src={duo} alt="Didie Martin und Gitarrist Oskar vor ihrer Bühnentechnik" class="photo" widths={[480, 800, 1075]} sizes="(max-width: 760px) 100vw, 560px" />
+      <Image src={didie} alt="Didie Martin von Alpen Express" class="photo" widths={[480, 800, 1075]} sizes="(max-width: 760px) 100vw, 560px" />
     </div>
   </section>
 
@@ -142,8 +141,8 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
           <p>Vor allem in Vorarlberg, der ganzen Schweiz, Liechtenstein und Süddeutschland – auf Anfrage aber auch weiter weg. Ich wohne in {site.city}, Vorarlberg.</p>
         </details>
         <details>
-          <summary>Solo oder Duo – was passt zu meinem Fest?</summary>
-          <p>Für kleinere Feiern reicht oft der Alleinunterhalter mit Gesang und Keyboard. Für grössere Feste und Hochzeiten empfehle ich das Duo mit Oskar an Gitarre und Gesang. Gerne berate ich dich persönlich.</p>
+          <summary>Duo oder Trio – was passt zu meinem Fest?</summary>
+          <p>Das Duo mit Gitarrist passt zu den meisten Feiern und Hochzeiten. Für grosse Feste, Zeltfeste und Firmenevents gibt es das Trio mit Band und noch vollerem Sound. Als Alleinunterhalter spiele ich nur auf Anfrage. Gerne berate ich dich persönlich.</p>
         </details>
         <details>
           <summary>Kannst du auch mein Wunschlied spielen?</summary>
