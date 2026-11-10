@@ -2,7 +2,7 @@ import { u } from '../lib/url';
 
 export const site = {
   name: 'Alpen Express Didie',
-  claim: 'Partyband & Alleinunterhalter aus Vorarlberg',
+  claim: 'Partyband aus Vorarlberg – im Duo oder Trio',
   url: 'https://www.alpenexpress.at',
   person: 'Didie Martin',
   phone: '+43 664 197 55 15',
@@ -21,7 +21,7 @@ export const site = {
 export const nav = [
   { href: u('/'), label: 'Start' },
   { href: u('/didie/'), label: 'Über Didie' },
-  { href: u('/duo/'), label: 'Duo' },
+  { href: u('/duo/'), label: 'Duo & Trio' },
   { href: u('/hochzeit/'), label: 'Hochzeit' },
   { href: u('/repertoire/'), label: 'Repertoire' },
   { href: u('/mediathek/'), label: 'Hörproben & Videos' },
