@@ -7,6 +7,9 @@ import Testimonials from '../components/Testimonials.astro';
 import AudioList from '../components/AudioList.astro';
 import didie from '../assets/img/didie-martin.jpg';
 import { site } from '../data/site';
+import { kommendeTermine, formatDatum } from '../data/termine';
+
+const naechsterTermin = kommendeTermine()[0];
 
 const occasions = [
   { title: 'Hochzeiten', text: 'Von der Trauung über den Apéro bis zur Party in den Morgenstunden – inklusive Wunschlied für den Brauttanz.' },
@@ -45,6 +48,44 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
       </div>
     </div>
   </section>
+
+  {
+    naechsterTermin && (
+      <section class="section section--white termin" id="termine">
+        <div class="wrap grid grid--2">
+          <div>
+            <span class="eyebrow">Nächster Termin</span>
+            <h2>
+              {naechsterTermin.title}
+              {naechsterTermin.besetzung && <span class="termin__besetzung"> {naechsterTermin.besetzung}</span>}
+            </h2>
+            <dl class="termin__facts">
+              <dt>Datum</dt>
+              <dd>{formatDatum(naechsterTermin.date)}</dd>
+              <dt>Zeit</dt>
+              <dd>{naechsterTermin.time}</dd>
+              <dt>Ort</dt>
+              <dd>
+                {naechsterTermin.location}, {naechsterTermin.place}
+              </dd>
+            </dl>
+            {naechsterTermin.text && <p class="lead">{naechsterTermin.text}</p>}
+          </div>
+          {naechsterTermin.flyer && (
+            <a href={naechsterTermin.flyer.src} class="termin__flyer" target="_blank" rel="noopener">
+              <Image
+                src={naechsterTermin.flyer}
+                alt={naechsterTermin.flyerAlt ?? naechsterTermin.title}
+                class="photo"
+                widths={[400, 700, 1000]}
+                sizes="(max-width: 760px) 100vw, 480px"
+              />
+            </a>
+          )}
+        </div>
+      </section>
+    )
+  }
 
   <section class="section">
     <div class="wrap grid grid--2">
@@ -208,6 +249,37 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
   .hero .lead {
     color: #ddd8ce;
     margin-bottom: 28px;
+  }
+
+  .termin .grid--2 {
+    align-items: center;
+  }
+
+  .termin__besetzung {
+    color: var(--accent);
+  }
+
+  .termin__facts {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 20px;
+    margin: 20px 0 24px;
+    font-size: 1.1rem;
+  }
+
+  .termin__facts dt {
+    color: var(--muted);
+  }
+
+  .termin__facts dd {
+    margin: 0;
+    font-weight: 650;
+  }
+
+  .termin__flyer {
+    display: block;
+    max-width: 480px;
+    justify-self: center;
   }
 
   .align-start {
