@@ -18,7 +18,7 @@ npm run build      # erzeugt die fertige Website im Ordner dist/
 | --- | --- |
 | Telefon, E-Mail, Adresse, Navigation | `src/data/site.ts` |
 | Repertoire (Songlisten) | `src/data/repertoire.ts` |
-| Hörproben und YouTube-Videos | `src/data/media.ts` (MP3s liegen nur auf dem Server, siehe unten) |
+| Hörproben und YouTube-Videos | `src/data/media.ts`, MP3s in `public/audio/` |
 | Empfänger und Felder des Anfrageformulars | `public/anfrage.php` und `src/pages/kontakt.astro` |
 | Rückblick-Beiträge | `src/content/rueckblick/*.md` – neue Datei anlegen, Bild in `src/assets/rueckblick/` |
 | Seitentexte | `src/pages/*.astro` |
@@ -30,8 +30,8 @@ Jeder Push auf `main` geht automatisch live (`.github/workflows/deploy.yml`): ba
 - **Pull Requests** werden nur gebaut, ohne Zugriff auf Secrets.
 - **Trockenlauf:** unter Actions → Build & Deploy → Run workflow; zeigt, was sich ändern würde.
 - **Zugang:** `SSH_PRIVATE_KEY`, `SSH_HOST`, `SSH_PORT`, `SSH_USER` und `SSH_KNOWN_HOSTS` liegen als Secrets im GitHub-Environment `production` (nur Branch `main`). Keine Variablen verwenden: Die Actions-Logs dieses Repos sind öffentlich, und nur Secrets werden darin maskiert. Auf dem Server ist er per `rrsync` in `~/.ssh/authorized_keys` auf den Webroot beschränkt: nur schreiben, kein Shell-Zugang, keine anderen Ordner.
-- **Achtung:** rsync läuft mit `--delete`. Was nicht im Build liegt, wird im Webroot gelöscht (ausser `.well-known` und `audio/`).
-- **Hörproben:** Sie liegen nur im Ordner `audio/` im Webroot, der Deploy lässt ihn unberührt. Neue Dateien per SFTP dorthin hochladen und in `src/data/media.ts` eintragen. Für den lokalen Entwicklungsserver kann eine Kopie in `public/audio/` liegen, der Ordner ist von Git ausgeschlossen.
+- **Achtung:** rsync läuft mit `--delete`. Was nicht im Build liegt, wird im Webroot gelöscht (ausser `.well-known`). Dateien in `audio/` sind gegen Löschen geschützt: Eine aus dem Repo entfernte Hörprobe bleibt auf dem Server liegen und muss bei Bedarf per SFTP gelöscht werden.
+- **Hörproben:** Sie liegen im Repo unter `public/audio/` (MP3 oder M4A, Dateiname in Kleinbuchstaben mit Bindestrichen, höchstens 15 MB) und werden mit jedem Deploy nach `audio/` im Webroot hochgeladen. Eintrag in `src/data/media.ts` nicht vergessen.
 
 Von Hand geht es weiterhin per SFTP, dafür `.deploy.env.example` nach `.deploy.env` kopieren:
 

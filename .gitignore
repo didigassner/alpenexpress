@@ -4,6 +4,3 @@ dist/
 .DS_Store
 .deploy.env
 backup/
-
-# Hörproben liegen nur auf dem Webserver, siehe README
-public/audio/

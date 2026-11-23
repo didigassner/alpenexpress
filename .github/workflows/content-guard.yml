@@ -55,15 +55,27 @@ jobs:
             esac
           done < <(git diff --name-only --no-renames "$range")
 
-          # 2. Keine Symlinks/Submodule, keine riesigen Dateien
+          # 2. Keine Symlinks/Submodule, keine riesigen Dateien.
+          #    Hörproben: nur MP3/M4A mit einfachem Namen in public/audio/, bis 15 MB.
           while read -r _ newmode _ newsha status path; do
             case "$newmode" in
               120000|160000) err "$path: Symlinks und Submodule sind nicht erlaubt." ;;
             esac
             if [ "$status" != "D" ]; then
+              limit=5000000; limit_text="5 MB"
+              case "${path,,}" in
+                public/audio/*)
+                  if [[ "$path" =~ ^public/audio/[a-z0-9]+(-[a-z0-9]+)*\.(mp3|m4a)$ ]]; then
+                    limit=15000000; limit_text="15 MB"
+                  else
+                    err "$path: In public/audio/ sind nur .mp3/.m4a mit Namen wie mein-lied.mp3 erlaubt."
+                  fi ;;
+                *.mp3|*.m4a|*.wav|*.flac|*.ogg|*.aac)
+                  err "$path: Hörproben gehören als .mp3 oder .m4a nach public/audio/." ;;
+              esac
               size=$(git cat-file -s "$newsha")
-              if [ "$size" -gt 5000000 ]; then
-                err "$path: Datei ist grösser als 5 MB, bitte verkleinern."
+              if [ "$size" -gt "$limit" ]; then
+                err "$path: Datei ist grösser als $limit_text, bitte verkleinern."
               fi
             fi
           done < <(git diff --raw --no-abbrev --no-renames "$range" | sed 's/^://; s/\t/ /')
