@@ -66,12 +66,13 @@ jobs:
 
       # Der Schlüssel ist serverseitig auf den Webroot beschränkt, daher Ziel ".".
       # .well-known bleibt erhalten, falls der Hoster es für die Zertifikatserneuerung braucht.
-      # /audio/ wird separat gepflegt und darf hier nie gelöscht werden.
+      # Die Hörproben in /audio/ kommen aus public/audio/ im Repo. Sie sind gegen Löschen
+      # geschützt (P-Filter): Fehlt eine Datei im Repo, bleibt sie auf dem Server liegen.
       - name: Hochladen
         run: |
           flags=()
           if [ "$DRY_RUN" = "true" ]; then flags+=(--dry-run); fi
-          rsync -rlpzc --chmod=D755,F644 --delete-delay --delay-updates --exclude=.well-known --exclude=/audio/ \
+          rsync -rlpzc --chmod=D755,F644 --delete-delay --delay-updates --exclude=.well-known --filter='P /audio/***' \
             --itemize-changes "${flags[@]}" \
             -e "ssh -i $HOME/.ssh/deploy_key -p $SSH_PORT -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes" \
             dist/ "$SSH_USER@$SSH_HOST:."
