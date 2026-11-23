@@ -1,0 +1,123 @@
+name: Content Guard
+
+# Prüft jeden Pull Request, bevor er gemergt werden darf. Erlaubt sind nur statische
+# Inhalte. Infrastruktur (Workflows, Skripte, Pakete, Server-Konfiguration) ändert nur Rene.
+#
+# Läuft bewusst auf "pull_request" (nicht "pull_request_target"): kein Zugriff auf Secrets,
+# nur Lesetoken, und es wird kein Code aus dem PR ausgeführt, nur git diff gelesen.
+# Die Prüfung steht direkt in dieser Datei. Der Token von Didis Bot hat keine
+# Workflows-Berechtigung und kann .github/workflows/ deshalb gar nicht ändern.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  content-guard:
+    name: content-guard
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Änderungen prüfen
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          set -euo pipefail
+          range="$BASE_SHA...$HEAD_SHA"
+          fail=0
+          err() { echo "::error::$*"; fail=1; }
+
+          # Dependabot darf Paketdateien und Action-Versionen aktualisieren.
+          dependabot=false
+          if [ "$PR_AUTHOR" = "dependabot[bot]" ]; then dependabot=true; fi
+
+          # 1. Geschützte Pfade und verbotene Dateitypen (auch Löschen und Umbenennen zählt)
+          while IFS= read -r f; do
+            [ -n "$f" ] || continue
+            case "$f" in
+              package.json|package-lock.json|.github/workflows/*)
+                $dependabot || err "$f: Infrastruktur, nur Rene darf das ändern." ;;
+              .github/*|scripts/*|deploy/*|astro.config.*|tsconfig.json|.nvmrc|.gitignore|.claude/*|.deploy.env*|src/content.config.ts|src/lib/*|src/layouts/*|AGENTS.md)
+                err "$f: Infrastruktur, nur Rene darf das ändern." ;;
+            esac
+            case "${f,,}" in
+              *.php|*.php[0-9]|*.phtml|*.phar|*.cgi|*.pl|*.py|*.rb|*.sh|*.bash|*.asp|*.aspx|*.jsp|*.exe|*.shtml|*.htaccess|*.htpasswd|*.user.ini|*php.ini|*.conf|web.config|*/web.config)
+                err "$f: Serverseitiger Code oder Server-Konfiguration ist nicht erlaubt." ;;
+            esac
+          done < <(git diff --name-only --no-renames "$range")
+
+          # 2. Keine Symlinks/Submodule, keine riesigen Dateien
+          while read -r _ newmode _ newsha status path; do
+            case "$newmode" in
+              120000|160000) err "$path: Symlinks und Submodule sind nicht erlaubt." ;;
+            esac
+            if [ "$status" != "D" ]; then
+              size=$(git cat-file -s "$newsha")
+              if [ "$size" -gt 5000000 ]; then
+                err "$path: Datei ist grösser als 5 MB, bitte verkleinern."
+              fi
+            fi
+          done < <(git diff --raw --no-abbrev --no-renames "$range" | sed 's/^://; s/\t/ /')
+
+          # 3. Hinzugefügte Zeilen in Inhalts- und Codedateien
+          labels=(
+            "<script"
+            "<iframe"
+            "<form"
+            "<object/<embed/<applet"
+            "on…= Event-Handler"
+            "javascript:/vbscript:/data:text/html URL"
+            "eval/new Function"
+            "set:html"
+            "externes Stylesheet/Script"
+            "Build-Code mit Systemzugriff (node:, fs, child_process, process, require, import())"
+            "Netzwerk/Cookies/Speicher (fetch, XMLHttpRequest, WebSocket, document.cookie, localStorage)"
+            "Tracking/Analytics"
+          )
+          patterns=(
+            '<script'
+            '<iframe'
+            '<form'
+            '<(object|embed|applet)'
+            '(^|[[:space:]"'"'"'/])on[a-z]+[[:space:]]*=[[:space:]]*["'"'"'{]'
+            '(javascript|vbscript)[[:space:]]*:|data:text/html'
+            '(^|[^a-z_])eval[[:space:]]*\(|new[[:space:]]+Function[[:space:]]*\('
+            'set:html'
+            '<link[^>]*href[[:space:]]*=[[:space:]]*["'"'"']?(https?:)?//|@import[^;]*(https?:)?//'
+            'from[[:space:]]*["'"'"'](node:[a-z_/]+|fs|child_process|os|net|http|https|path|url|process)(/|["'"'"'])|child_process|process\.(env|exit|cwd)|require[[:space:]]*\(|import[[:space:]]*\(|import\.meta\.env'
+            '(^|[^a-z_.])fetch[[:space:]]*\(|XMLHttpRequest|WebSocket|sendBeacon|document\.cookie|localStorage|sessionStorage'
+            'googletagmanager|google-analytics|gtag\(|fbq\(|connect\.facebook\.net|matomo|hotjar|clarity\.ms|plausible|umami'
+          )
+
+          git diff -U0 --no-color --no-renames --diff-filter=ACMRT "$range" -- \
+            '*.astro' '*.html' '*.htm' '*.md' '*.mdx' '*.ts' '*.tsx' '*.js' '*.jsx' '*.mjs' '*.cjs' \
+            '*.svg' '*.xml' '*.css' '*.json' '*.txt' '*.yml' '*.yaml' \
+            ':!.github/**' ':!package-lock.json' |
+            awk '/^diff --git /{hdr=1; next}
+                 hdr && /^\+\+\+ /{f=substr($0,7); hdr=0; next}
+                 !hdr && /^\+/{print f "\t" substr($0,2)}' > "$RUNNER_TEMP/added.txt"
+
+          while IFS=$'\t' read -r f line; do
+            for i in "${!patterns[@]}"; do
+              if grep -qiE -- "${patterns[$i]}" <<<"$line"; then
+                err "$f: ${labels[$i]} ist nicht erlaubt: ${line:0:150}"
+              fi
+            done
+          done < "$RUNNER_TEMP/added.txt"
+
+          if [ "$fail" -ne 0 ]; then
+            echo
+            echo "Dieser Pull Request enthält Änderungen, die nur Rene machen darf."
+            echo "Erlaubt sind nur statische Inhalte: Texte, Termine, Bilder, Links."
+            exit 1
+          fi
+          echo "Alles in Ordnung: nur statische Inhalte."

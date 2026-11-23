@@ -1,0 +1,11 @@
+# Infrastruktur: Änderungen hier macht nur Rene (über den Account didigassner).
+# Der Check "content-guard" blockiert solche Änderungen in Pull Requests ohnehin.
+/.github/           @didigassner
+/scripts/           @didigassner
+/deploy/            @didigassner
+/package.json       @didigassner
+/package-lock.json  @didigassner
+/astro.config.*     @didigassner
+/public/.htaccess   @didigassner
+/public/anfrage.php @didigassner
+/AGENTS.md          @didigassner

@@ -12,6 +12,8 @@ npm run build      # erzeugt die fertige Website im Ordner dist/
 
 ## Inhalte pflegen
 
+Änderungen laufen über Pull Requests: Branch, Pull Request, Auto-Merge, sobald die Checks `content-guard` und `build` grün sind. `main` ist geschützt. Die Anleitung für den Webmaster-Bot steht in [AGENTS.md](AGENTS.md).
+
 | Was | Wo |
 | --- | --- |
 | Telefon, E-Mail, Adresse, Navigation | `src/data/site.ts` |
