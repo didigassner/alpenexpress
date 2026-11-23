@@ -29,7 +29,7 @@ Jeder Push auf `main` geht automatisch live (`.github/workflows/deploy.yml`): ba
 
 - **Pull Requests** werden nur gebaut, ohne Zugriff auf Secrets.
 - **Trockenlauf:** unter Actions → Build & Deploy → Run workflow; zeigt, was sich ändern würde.
-- **Zugang:** `SSH_PRIVATE_KEY`, `SSH_HOST`, `SSH_PORT`, `SSH_USER` und `SSH_KNOWN_HOSTS` liegen als Secrets im GitHub-Environment `production` (nur Branch `main`). Keine Variablen verwenden: Die Actions-Logs dieses Repos sind öffentlich, und nur Secrets werden darin maskiert. Auf dem Server ist er auf den Webroot beschränkt: nur schreiben, kein Shell-Zugang, keine anderen Ordner.
+- **Zugang:** `SSH_PRIVATE_KEY`, `SSH_HOST`, `SSH_PORT`, `SSH_USER` und `SSH_KNOWN_HOSTS` liegen als Secrets im GitHub-Environment `production` (nur Branch `main`). Keine Variablen verwenden: Die Actions-Logs dieses Repos sind öffentlich, und nur Secrets werden darin maskiert. Der Schlüssel ist auf dem Server auf den Webroot beschränkt.
 - **Achtung:** rsync läuft mit `--delete`. Was nicht im Build liegt, wird im Webroot gelöscht (ausser `.well-known`). Dateien in `audio/` sind gegen Löschen geschützt: Eine aus dem Repo entfernte Hörprobe bleibt auf dem Server liegen und muss bei Bedarf per SFTP gelöscht werden.
 - **Hörproben:** Sie liegen im Repo unter `public/audio/` (MP3 oder M4A, Dateiname in Kleinbuchstaben mit Bindestrichen, höchstens 15 MB) und werden mit jedem Deploy nach `audio/` im Webroot hochgeladen. Eintrag in `src/data/media.ts` nicht vergessen.
 
@@ -40,6 +40,6 @@ scripts/deploy.sh test     # Verbindung prüfen, Webroot auflisten
 scripts/deploy.sh upload   # bauen und hochladen, fragt vorher nach
 ```
 
-Der Varnish-Cache von des Hosters ist deaktiviert, Änderungen sind also sofort sichtbar. Wird er wieder eingeschaltet: Er ignoriert sämtliche `Cache-Control`-Header (getestet: `no-store`, `private`, `s-maxage=0`), nur `Set-Cookie` umgeht ihn. Änderungen erscheinen dann erst, wenn der Cache im Controlpanel geleert wird oder abläuft: Webhosting → Webserver Einstellungen → Varnish → Verwalten.
+Der Varnish-Cache des Hosters ist deaktiviert, Änderungen sind also sofort sichtbar. Wird er wieder eingeschaltet: Er ignoriert sämtliche `Cache-Control`-Header (getestet: `no-store`, `private`, `s-maxage=0`), nur `Set-Cookie` umgeht ihn. Änderungen erscheinen dann erst, wenn der Cache im Controlpanel geleert wird oder abläuft: Webhosting → Webserver Einstellungen → Varnish → Verwalten.
 
 Die `.htaccess` leitet alle alten WordPress-URLs per 301 auf die neuen Seiten um (wichtig für Google), sperrt `wp-admin`/`xmlrpc.php` und alle `.php`-Dateien ausser `anfrage.php` mit 410, erzwingt HTTPS + www und setzt Sicherheits- und Cache-Header. Redirect-Ziele stehen absolut drin, weil der Webserver hinter dem Proxy des Hosters Schema und Port nicht kennt. Sie setzt einen Apache-Server mit `mod_rewrite` voraus.

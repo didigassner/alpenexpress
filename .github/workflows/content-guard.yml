@@ -1,12 +1,11 @@
 name: Content Guard
 
 # Prüft jeden Pull Request, bevor er gemergt werden darf. Erlaubt sind nur statische
-# Inhalte. Infrastruktur (Workflows, Skripte, Pakete, Server-Konfiguration) ändert nur der technische Betreuer.
+# Inhalte. Infrastruktur (Workflows, Skripte, Pakete, Server-Konfiguration) ändert nur der
+# technische Betreuer.
 #
 # Läuft bewusst auf "pull_request" (nicht "pull_request_target"): kein Zugriff auf Secrets,
 # nur Lesetoken, und es wird kein Code aus dem PR ausgeführt, nur git diff gelesen.
-# Die Prüfung steht direkt in dieser Datei. Der Token von Didis Bot hat keine
-# Workflows-Berechtigung und kann .github/workflows/ deshalb gar nicht ändern.
 
 on:
   pull_request:
