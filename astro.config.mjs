@@ -22,5 +22,5 @@ export default defineConfig({
   base: isPreview ? '/dev' : undefined,
   trailingSlash: 'always',
   build: { format: 'directory' },
-  integrations: isPreview ? [previewHtaccess] : [sitemap({ filter: (page) => !page.includes('/kontakt/danke/') })],
+  integrations: isPreview ? [previewHtaccess] : [sitemap({ filter: (page) => !page.includes('/danke/') })],
 });
