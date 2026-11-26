@@ -1,6 +1,6 @@
 # alpenexpress.at – statische Website
 
-Gebaut mit [Astro](https://astro.build). Ergebnis ist reines HTML/CSS mit ein paar Zeilen JavaScript – keine Datenbank, keine Plugins. Einzige serverseitige Datei ist `public/anfrage.php` für das Anfrageformular; sie braucht keine Zugangsdaten, alle anderen `.php`-Aufrufe sperrt die `.htaccess`.
+Gebaut mit [Astro](https://astro.build). Ergebnis ist reines HTML/CSS mit ein paar Zeilen JavaScript – keine Datenbank, keine Plugins. Einzige serverseitige Datei ist `public/anfrage.php` für die Anfrageformulare (Kontaktseite und Hotel-Special); sie braucht keine Zugangsdaten, alle anderen `.php`-Aufrufe sperrt die `.htaccess`.
 
 ## Lokal ansehen
 
@@ -19,7 +19,7 @@ npm run build      # erzeugt die fertige Website im Ordner dist/
 | Telefon, E-Mail, Adresse, Navigation | `src/data/site.ts` |
 | Repertoire (Songlisten) | `src/data/repertoire.ts` |
 | Hörproben und YouTube-Videos | `src/data/media.ts`, MP3s in `public/audio/` |
-| Empfänger und Felder des Anfrageformulars | `public/anfrage.php` und `src/pages/kontakt.astro` |
+| Empfänger und Felder der Anfrageformulare | `public/anfrage.php`, `src/pages/kontakt.astro` und das Hotel-Special in `src/pages/index.astro` |
 | Rückblick-Beiträge | `src/content/rueckblick/*.md` – neue Datei anlegen, Bild in `src/assets/rueckblick/` |
 | Seitentexte | `src/pages/*.astro` |
 

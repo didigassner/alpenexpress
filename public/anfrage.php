@@ -1,7 +1,8 @@
 <?php
-// Anfrageformular der Kontaktseite. Einzige PHP-Datei der Website, kommt ohne
-// Zugangsdaten und Datenbank aus. Der Empfänger ist fest vorgegeben, damit das
-// Skript nicht als offene Mail-Schleuder missbraucht werden kann.
+// Anfrageformulare (Kontaktseite und Hotel-Special). Einzige PHP-Datei der
+// Website, kommt ohne Zugangsdaten und Datenbank aus. Der Empfänger ist fest
+// vorgegeben, damit das Skript nicht als offene Mail-Schleuder missbraucht
+// werden kann.
 
 declare(strict_types=1);
 
@@ -16,6 +17,12 @@ const MIN_FILL_MS = 3000;  // schneller füllt kein Mensch das Formular aus
 const OCCASIONS = ['Hochzeit', 'Geburtstag', 'Firmenfeier', 'Weihnachtsfeier', 'Vereinsfest / Zeltfest', 'Jubiläum', 'Anderer Anlass'];
 const LINEUPS = ['Duo', 'Trio', 'Solo (auf Anfrage)', 'Noch offen – bitte beraten'];
 
+function requestedType(): string
+{
+    $typ = $_POST['typ'] ?? '';
+    return is_string($typ) && $typ === 'hotel-special' ? 'hotel-special' : 'kontakt';
+}
+
 function respond(int $status, string $error = ''): void
 {
     $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
@@ -28,7 +35,12 @@ function respond(int $status, string $error = ''): void
 
     // Ohne JavaScript: normale Weiterleitung, funktioniert auch unter /dev/
     $base = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/');
-    header('Location: ' . $base . ($error === '' ? '/kontakt/danke/' : '/kontakt/#fehler'), true, 303);
+    if (requestedType() === 'hotel-special') {
+        $target = $error === '' ? '/hotel-special/danke/' : '/#hotel-special-fehler';
+    } else {
+        $target = $error === '' ? '/kontakt/danke/' : '/kontakt/#fehler';
+    }
+    header('Location: ' . $base . $target, true, 303);
     exit;
 }
 
@@ -82,6 +94,38 @@ function rateLimited(): bool
     return $limited;
 }
 
+function sendMail(string $subject, array $lines, string $replyTo): void
+{
+    if (rateLimited()) {
+        respond(429, 'limit');
+    }
+
+    // Nur geprüfte Werte in den Headern: Betreff fest bzw. aus erlaubter Liste, E-Mail per filter_var
+    $headers = [
+        'From: "Website Alpen Express" <' . SENDER . '>',
+        'Reply-To: ' . $replyTo,
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Transfer-Encoding: base64',
+    ];
+
+    // Envelope-Absender: Unzustellbarkeits-Meldungen landen im echten Postfach
+    $sent = mail(
+        RECIPIENT,
+        '=?UTF-8?B?' . base64_encode($subject) . '?=',
+        chunk_split(base64_encode(implode("\n", $lines))),
+        implode("\r\n", $headers),
+        '-f' . RECIPIENT
+    );
+
+    if (!$sent) {
+        error_log('anfrage.php: mail() fehlgeschlagen');
+        respond(500, 'send');
+    }
+
+    respond(200);
+}
+
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     header('Allow: POST');
     respond(405, 'method');
@@ -97,6 +141,50 @@ if ($origin !== '' && parse_url($origin, PHP_URL_HOST) !== $host) {
 $elapsed = $_POST['dauer'] ?? '';
 if (($_POST['homepage'] ?? '') !== '' || (is_string($elapsed) && $elapsed !== '' && (int) $elapsed < MIN_FILL_MS)) {
     respond(200);
+}
+
+$typ = field('typ', 40);
+if ($typ !== '' && $typ !== 'hotel-special' && $typ !== 'kontakt') {
+    respond(422, 'invalid');
+}
+
+if ($typ === 'hotel-special') {
+    $name = field('name', 200);
+    $hotel = field('hotel', 200);
+    $email = field('email', 254);
+    $phone = field('telefon', 50);
+    $message = field('nachricht', 5000, true);
+    $consent = field('einwilligung', 10);
+
+    $valid = $name !== ''
+        && $hotel !== ''
+        && filter_var($email, FILTER_VALIDATE_EMAIL) !== false
+        && $message !== ''
+        && $consent === '1';
+    if (!$valid) {
+        respond(422, 'invalid');
+    }
+
+    sendMail(
+        'Anfrage – Alpenexpress Hotel-Special 2027',
+        [
+            'Neue Anfrage zum Hotel-Special 2027 über www.alpenexpress.at',
+            '',
+            'Name: ' . $name,
+            'Hotel/Betrieb: ' . $hotel,
+            'E-Mail: ' . $email,
+            'Telefon: ' . ($phone ?: '-'),
+            '',
+            'Nachricht:',
+            $message,
+            '',
+            'Einwilligung Datenschutz: ja',
+            '',
+            '--',
+            'Mit „Antworten“ geht die Mail direkt an ' . $email,
+        ],
+        $email
+    );
 }
 
 $name = field('name', 200);
@@ -118,53 +206,27 @@ if (!$valid) {
     respond(422, 'invalid');
 }
 
-if (rateLimited()) {
-    respond(429, 'limit');
-}
-
 $dateText = $date === '' ? '' : implode('.', array_reverse(explode('-', $date)));
 
-$lines = [
-    'Neue Anfrage über www.alpenexpress.at',
-    '',
-    'Name: ' . $name,
-    'E-Mail: ' . $email,
-    'Telefon: ' . ($phone ?: '-'),
-    'Anlass: ' . $occasion,
-    'Datum: ' . ($dateText ?: '-'),
-    'Ort: ' . ($place ?: '-'),
-    'Gäste: ' . ($guests ?: '-'),
-    'Besetzung: ' . $lineup,
-    '',
-    'Nachricht:',
-    $message ?: '-',
-    '',
-    '--',
-    'Mit „Antworten“ geht die Mail direkt an ' . $email,
-];
-
-// Nur geprüfte Werte in den Headern: Anlass aus fester Liste, Datum per Regex, E-Mail per filter_var
-$subject = 'Anfrage: ' . $occasion . ($dateText === '' ? '' : ' am ' . $dateText);
-$headers = [
-    'From: "Website Alpen Express" <' . SENDER . '>',
-    'Reply-To: ' . $email,
-    'MIME-Version: 1.0',
-    'Content-Type: text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding: base64',
-];
-
-// Envelope-Absender: Unzustellbarkeits-Meldungen landen im echten Postfach
-$sent = mail(
-    RECIPIENT,
-    '=?UTF-8?B?' . base64_encode($subject) . '?=',
-    chunk_split(base64_encode(implode("\n", $lines))),
-    implode("\r\n", $headers),
-    '-f' . RECIPIENT
+sendMail(
+    'Anfrage: ' . $occasion . ($dateText === '' ? '' : ' am ' . $dateText),
+    [
+        'Neue Anfrage über www.alpenexpress.at',
+        '',
+        'Name: ' . $name,
+        'E-Mail: ' . $email,
+        'Telefon: ' . ($phone ?: '-'),
+        'Anlass: ' . $occasion,
+        'Datum: ' . ($dateText ?: '-'),
+        'Ort: ' . ($place ?: '-'),
+        'Gäste: ' . ($guests ?: '-'),
+        'Besetzung: ' . $lineup,
+        '',
+        'Nachricht:',
+        $message ?: '-',
+        '',
+        '--',
+        'Mit „Antworten“ geht die Mail direkt an ' . $email,
+    ],
+    $email
 );
-
-if (!$sent) {
-    error_log('anfrage.php: mail() fehlgeschlagen');
-    respond(500, 'send');
-}
-
-respond(200);

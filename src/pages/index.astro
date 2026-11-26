@@ -12,7 +12,13 @@ import { kommendeTermine, formatDatum } from '../data/termine';
 
 const naechsterTermin = kommendeTermine()[0];
 
-// Hotel-Special 2027: Anfrage per E-Mail, kein Formular (Text so von Didi vorgegeben)
+// Hotel-Special 2027: Formular auf der Seite, mailto bleibt als Alternative (Text so von Didi vorgegeben)
+const hotelMessage = `Guten Tag,
+
+hiermit fordere ich ausdrücklich das Informationsblatt zum Alpenexpress Hotel-Special 2027 per E-Mail an.
+
+Freundliche Grüße`;
+
 const hotelMail =
   'mailto:office@alpenexpress.at?subject=Anfrage%20%E2%80%93%20Alpenexpress%20Hotel-Special%202027&body=Guten%20Tag%2C%0A%0Ahiermit%20fordere%20ich%20ausdr%C3%BCcklich%20das%20Informationsblatt%20zum%20Alpenexpress%20Hotel-Special%202027%20per%20E-Mail%20an.%0A%0AHotelname%3A%0AAnsprechpartner%3A%0AGesch%C3%A4ftliche%20E-Mail-Adresse%3A%0A%0AFreundliche%20Gr%C3%BC%C3%9Fe';
 
@@ -89,31 +95,78 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
   jsonLd={[faqJsonLd]}
 >
   <section class="hotel-special" id="hotel-special" aria-labelledby="hotel-special-titel">
-    <div class="wrap hotel-special__inner">
-      <a href={hotelMail} class="hotel-special__bild" tabindex="-1">
+    <div class="wrap">
+    <div class="hotel-special__inner">
+      <div class="hotel-special__bild">
         <Image
           src={hotelSpecial}
-          alt="Alpenexpress Hotel-Special 2027: Live-Musik, die Ihre Gäste begeistert! Exklusiver Hotelvorteil für Hotels – Informationsblatt auf Anfrage per E-Mail."
+          alt="Alpenexpress Hotel-Special 2027: Live-Musik, die Ihre Gäste begeistert! Exklusiver Hotelvorteil für Hotels – Informationsblatt auf Anfrage."
           widths={[480, 800, 1200, 1600]}
           sizes="(max-width: 900px) 100vw, 680px"
           loading="eager"
           fetchpriority="high"
         />
-      </a>
+      </div>
       <div class="hotel-special__text">
         <span class="eyebrow">Für Hotels</span>
         <h2 id="hotel-special-titel">Alpenexpress Hotel-Special 2027</h2>
         <p>Live-Musik, die Ihre Gäste begeistert – mit einem exklusiven Vorteil für Hotels.</p>
-        <a class="btn hotel-special__btn" href={hotelMail}>
-          <Icon name="mail" /> Fordern Sie jetzt Ihren exklusiven Hotelvorteil an!
-        </a>
         <p class="hotel-special__hinweis">
           Das Informationsblatt senden wir Ihnen nach Ihrer Anfrage persönlich per E-Mail zu. Die Anfrage gilt nur für dieses Angebot – keine weitere Werbung.
         </p>
-        <p class="hotel-special__hinweis">
-          Kein E-Mail-Programm? Schreiben Sie einfach an <a href="mailto:office@alpenexpress.at">office@alpenexpress.at</a>.
-        </p>
       </div>
+    </div>
+
+        <p class="hotel-special__error" id="hotel-special-fehler" role="alert">
+          Das hat leider nicht geklappt. Bitte prüfen Sie Ihre Angaben oder schreiben Sie uns direkt an <a href="mailto:office@alpenexpress.at">office@alpenexpress.at</a>.
+        </p>
+
+        <form id="hotel-anfrage" class="hotel-special__form" action={u('/anfrage.php')} method="post" accept-charset="UTF-8">
+          <input type="hidden" name="typ" value="hotel-special" />
+          <div class="hotel-special__row">
+            <label for="hotel-name">
+              Ihr Name *
+              <input id="hotel-name" name="name" required maxlength="100" autocomplete="name" />
+            </label>
+            <label for="hotel-betrieb">
+              Hotel / Betrieb *
+              <input id="hotel-betrieb" name="hotel" required maxlength="200" autocomplete="organization" />
+            </label>
+          </div>
+          <div class="hotel-special__row">
+            <label for="hotel-email">
+              Ihre E-Mail *
+              <input id="hotel-email" name="email" type="email" required maxlength="254" autocomplete="email" />
+            </label>
+            <label for="hotel-telefon">
+              Telefon (optional)
+              <input id="hotel-telefon" name="telefon" type="tel" maxlength="50" autocomplete="tel" />
+            </label>
+          </div>
+          <label for="hotel-nachricht">
+            Ihre Nachricht *
+            <textarea id="hotel-nachricht" name="nachricht" rows="7" required maxlength="4000">{hotelMessage}</textarea>
+          </label>
+          <div class="hp" aria-hidden="true">
+            <label>
+              Bitte nicht ausfüllen
+              <input name="homepage" tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
+          <input type="hidden" name="dauer" value="" />
+          <label class="hotel-special__consent" for="hotel-einwilligung">
+            <input id="hotel-einwilligung" name="einwilligung" type="checkbox" value="1" required />
+            <span>
+              Ich willige ein, dass meine Angaben zur Bearbeitung dieser Anfrage per E-Mail an die Alpenexpress Partyband übermittelt werden. Die Anfrage gilt nur für dieses Angebot – keine weitere Werbung. Mehr dazu in der <a href={u('/datenschutz/')}>Datenschutzerklärung</a>.
+            </span>
+          </label>
+          <button class="btn hotel-special__btn" type="submit">
+            <Icon name="mail" /> Fordern Sie jetzt Ihren exklusiven Hotelvorteil an!
+          </button>
+        </form>
+        <p class="hotel-special__hinweis">
+          Lieber direkt per E-Mail? Nutzen Sie den <a href={hotelMail}>vorbereiteten E-Mail-Entwurf</a> oder schreiben Sie an <a href="mailto:office@alpenexpress.at">office@alpenexpress.at</a>.
+        </p>
     </div>
   </section>
 
@@ -295,6 +348,14 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
   </section>
 </Base>
 
+<script>
+  const hotelForm = document.querySelector<HTMLFormElement>('#hotel-anfrage');
+  hotelForm?.addEventListener('submit', () => {
+    const elapsed = hotelForm.querySelector<HTMLInputElement>('input[name="dauer"]');
+    if (elapsed) elapsed.value = String(Math.round(performance.now()));
+  });
+</script>
+
 <style>
   .hotel-special {
     background: var(--ink);
@@ -304,9 +365,10 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
 
   .hotel-special__inner {
     display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
     gap: clamp(16px, 3vw, 40px);
     align-items: center;
+    margin-bottom: 8px;
   }
 
   .hotel-special__bild {
@@ -335,8 +397,10 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
 
   .hotel-special__btn {
     width: 100%;
+    max-width: 40rem;
     min-height: 64px;
-    margin: 8px 0 16px;
+    margin: 8px 0 0;
+    justify-self: start;
     padding: 0.9em 1.2em;
     font-size: clamp(1.1rem, 1rem + 0.4vw, 1.3rem);
     font-weight: 750;
@@ -344,14 +408,15 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
     text-align: center;
     background: var(--gold);
     color: var(--ink);
-    border-color: #fff;
+    border-color: var(--ink);
     box-shadow: 0 6px 20px rgb(0 0 0 / 0.35);
   }
 
   .hotel-special__btn:hover,
   .hotel-special__btn:focus-visible {
-    background: #fff;
-    color: var(--ink);
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
   }
 
   .hotel-special__hinweis {
@@ -359,9 +424,109 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
     margin-bottom: 0.5em;
   }
 
-  .hotel-special__text a:not(.btn) {
+  .hotel-special__hinweis a {
     color: var(--gold);
     font-weight: 650;
+  }
+
+  .hotel-special__error {
+    display: none;
+    margin: 0 0 16px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 2px solid var(--gold);
+    background: rgb(0 0 0 / 0.35);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .hotel-special__error:target {
+    display: block;
+  }
+
+  .hotel-special__error a {
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .hotel-special__form {
+    display: grid;
+    gap: 16px;
+    margin: 20px 0 16px;
+    padding: clamp(20px, 3vw, 28px);
+    background: var(--paper);
+    color: var(--text);
+    border-radius: var(--radius);
+  }
+
+  .hotel-special__row {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  }
+
+  .hotel-special__form label {
+    display: grid;
+    gap: 6px;
+    font-weight: 650;
+    font-size: 1.05rem;
+  }
+
+  .hotel-special__form input:not([type='checkbox']),
+  .hotel-special__form textarea {
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 14px;
+    font: inherit;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--text);
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 10px;
+  }
+
+  .hotel-special__form textarea {
+    min-height: 12em;
+    resize: vertical;
+  }
+
+  .hotel-special__form input:focus-visible,
+  .hotel-special__form textarea:focus-visible,
+  .hotel-special__consent input:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+    border-color: var(--ink);
+  }
+
+  .hotel-special__consent {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 12px;
+    font-weight: 500 !important;
+    font-size: 1rem !important;
+    line-height: 1.45;
+  }
+
+  .hotel-special__consent input {
+    width: 28px;
+    height: 28px;
+    margin-top: 2px;
+    flex: none;
+    accent-color: var(--accent);
+  }
+
+  .hotel-special__form a {
+    color: var(--accent);
+    font-weight: 650;
+  }
+
+  .hotel-special__form .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
   }
 
   @media (max-width: 900px) {
