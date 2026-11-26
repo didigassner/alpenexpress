@@ -104,7 +104,7 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
       <div class="hotel-special__bild">
         <Image
           src={hotelSpecial}
-          alt="Alpenexpress Hotel-Special 2027: Live-Musik, die Ihre Gäste begeistert! Exklusiver Hotelvorteil für Hotels – Informationsblatt auf Anfrage."
+          alt="Alpenexpress Hotel-Special 2027: Live-Musik, die deine Gäste begeistert! Exklusiver Hotelvorteil für Hotels – Informationsblatt auf Anfrage."
           widths={[480, 800, 1200, 1600]}
           sizes="(max-width: 900px) 100vw, 680px"
           loading="eager"
@@ -114,22 +114,22 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
       <div class="hotel-special__text">
         <span class="eyebrow">Für Hotels</span>
         <h2 id="hotel-special-titel">Alpenexpress Hotel-Special 2027</h2>
-        <p>Live-Musik, die Ihre Gäste begeistert – mit einem exklusiven Vorteil für Hotels.</p>
+        <p>Live-Musik, die deine Gäste begeistert – mit einem exklusiven Vorteil für Hotels.</p>
         <p class="hotel-special__hinweis">
-          Das Informationsblatt senden wir Ihnen nach Ihrer Anfrage persönlich per E-Mail zu. Die Anfrage gilt nur für dieses Angebot – keine weitere Werbung.
+          Das Informationsblatt senden wir dir nach deiner Anfrage persönlich per E-Mail zu. Die Anfrage gilt nur für dieses Angebot – keine weitere Werbung.
         </p>
       </div>
     </div>
 
         <p class="hotel-special__error" id="hotel-special-fehler" role="alert">
-          Das hat leider nicht geklappt. Bitte prüfen Sie Ihre Angaben oder schreiben Sie uns direkt an <a href="mailto:office@alpenexpress.at">office@alpenexpress.at</a>.
+          Das hat leider nicht geklappt. Bitte prüfe deine Angaben oder schreib uns direkt an <a href="mailto:office@alpenexpress.at">office@alpenexpress.at</a>.
         </p>
 
         <form id="hotel-anfrage" class="hotel-special__form" action={u('/anfrage.php')} method="post" accept-charset="UTF-8">
           <input type="hidden" name="typ" value="hotel-special" />
           <div class="hotel-special__row">
             <label for="hotel-name">
-              Ihr Name *
+              Dein Name *
               <input id="hotel-name" name="name" required maxlength="100" autocomplete="name" />
             </label>
             <label for="hotel-betrieb">
@@ -139,7 +139,7 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
           </div>
           <div class="hotel-special__row">
             <label for="hotel-email">
-              Ihre E-Mail *
+              Deine E-Mail *
               <input id="hotel-email" name="email" type="email" required maxlength="254" autocomplete="email" />
             </label>
             <label for="hotel-telefon">
@@ -148,7 +148,7 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
             </label>
           </div>
           <label for="hotel-nachricht">
-            Ihre Nachricht *
+            Deine Nachricht *
             <textarea id="hotel-nachricht" name="nachricht" rows="7" required maxlength="4000">{hotelMessage}</textarea>
           </label>
           <div class="hp" aria-hidden="true">
@@ -165,11 +165,11 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
             </span>
           </label>
           <button class="btn hotel-special__btn" type="submit">
-            <Icon name="mail" /> Fordern Sie jetzt Ihren exklusiven Hotelvorteil an!
+            <Icon name="mail" /> Fordere jetzt deinen exklusiven Hotelvorteil an!
           </button>
         </form>
         <p class="hotel-special__hinweis">
-          Lieber direkt per E-Mail? Nutzen Sie den <a href={hotelMail}>vorbereiteten E-Mail-Entwurf</a> oder schreiben Sie an <a href="mailto:office@alpenexpress.at">office@alpenexpress.at</a>.
+          Lieber direkt per E-Mail? Nutze den <a href={hotelMail}>vorbereiteten E-Mail-Entwurf</a> oder schreib an <a href="mailto:office@alpenexpress.at">office@alpenexpress.at</a>.
         </p>
     </div>
   </section>

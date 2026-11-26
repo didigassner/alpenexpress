@@ -102,7 +102,7 @@ function sendMail(string $subject, array $lines, string $replyTo): void
 
     // Nur geprüfte Werte in den Headern: Betreff fest bzw. aus erlaubter Liste, E-Mail per filter_var
     $headers = [
-        'From: "Website Alpen Express" <' . SENDER . '>',
+        'From: "Website Alpenexpress Partyband" <' . SENDER . '>',
         'Reply-To: ' . $replyTo,
         'MIME-Version: 1.0',
         'Content-Type: text/plain; charset=UTF-8',
