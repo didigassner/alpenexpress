@@ -13,7 +13,7 @@ const occasions = ['Hochzeit', 'Geburtstag', 'Firmenfeier', 'Weihnachtsfeier', '
   description="Unverbindlich anfragen: Telefon, WhatsApp oder E-Mail an die Alpenexpress Partyband. Kostenloses Angebot für deine Hochzeit, Geburtstagsfeier, Firmenfeier oder dein Vereinsfest."
   noContactBand
 >
-  <PageHero eyebrow="Kontakt" title="Lass uns über dein Fest reden" lead="Ich informiere und unterstütze dich gerne bei allen Fragen zu deinem bevorstehenden Fest – kostenlos und unverbindlich." />
+  <PageHero eyebrow="Kontakt" title="Lass uns über dein Fest reden" lead="Wir informieren und unterstützen dich gerne bei allen Fragen zu deinem bevorstehenden Fest – kostenlos und unverbindlich." />
 
   <section class="section">
     <div class="wrap contact">
@@ -43,10 +43,10 @@ const occasions = ['Hochzeit', 'Geburtstag', 'Firmenfeier', 'Weihnachtsfeier', '
 
       <div class="card contact__form">
         <h2>Anfrage senden</h2>
-        <p class="hint">Fülle aus, was du schon weisst – ich melde mich so bald wie möglich bei dir. Mit * markierte Felder brauche ich, um dir antworten zu können.</p>
+        <p class="hint">Fülle aus, was du schon weisst – wir melden uns so bald wie möglich bei dir. Mit * markierte Felder brauchen wir, um dir antworten zu können.</p>
         <div class="form-success" id="erfolg" tabindex="-1" hidden>
-          <h3>Danke – ich melde mich bei dir!</h3>
-          <p>Deine Anfrage ist bei mir angekommen.</p>
+          <h3>Danke – wir melden uns bei dir!</h3>
+          <p>Deine Anfrage ist bei uns angekommen.</p>
         </div>
         <form id="anfrage" action={u('/anfrage.php')} method="post">
           <div class="row">
@@ -81,9 +81,9 @@ const occasions = ['Hochzeit', 'Geburtstag', 'Firmenfeier', 'Weihnachtsfeier', '
           <input type="hidden" name="dauer" value="" />
           <p class="form-error" id="fehler" role="alert">
             <span data-text>Das hat leider nicht geklappt.</span>{' '}
-            Bitte versuche es noch einmal oder ruf mich direkt an: <a href={site.phoneHref}>{site.phone}</a>
+            Bitte versuche es noch einmal oder ruf uns direkt an: <a href={site.phoneHref}>{site.phone}</a>
           </p>
-          <p class="privacy">Mit dem Absenden werden deine Angaben zur Bearbeitung deiner Anfrage per E-Mail an mich übermittelt. Mehr dazu in der <a href={u('/datenschutz/')}>Datenschutzerklärung</a>.</p>
+          <p class="privacy">Mit dem Absenden werden deine Angaben zur Bearbeitung deiner Anfrage per E-Mail an uns übermittelt. Mehr dazu in der <a href={u('/datenschutz/')}>Datenschutzerklärung</a>.</p>
           <button class="btn" type="submit">Anfrage senden <Icon name="arrow" /></button>
         </form>
       </div>

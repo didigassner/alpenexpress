@@ -20,7 +20,7 @@ export const site = {
 
 export const nav = [
   { href: u('/'), label: 'Start' },
-  { href: u('/didie/'), label: 'Über Didie' },
+  { href: u('/didie/'), label: 'Über uns' },
   { href: u('/duo/'), label: 'Duo & Trio' },
   { href: u('/hochzeit/'), label: 'Hochzeit' },
   { href: u('/repertoire/'), label: 'Repertoire' },
