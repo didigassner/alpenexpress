@@ -6,6 +6,6 @@ image: ../../assets/rueckblick/seefest-horn.jpg
 imageAlt: "Festzelt am Seefest in Horn"
 ---
 
-Da tobte das Festzelt bis in die frühen Morgenstunden: Vollgasparty im „Schluchzelt“ am Horner Seefest mit Alpen Express Didie!
+Da tobte das Festzelt bis in die frühen Morgenstunden: Vollgasparty im „Schluchzelt“ am Horner Seefest mit Didie von der Alpenexpress Partyband!
 
 Im voll besetzten Zelt gab es Tanz-, Party- und Stimmungsmusik bis hin zu den aktuellen Hits. Als Didie mit dem Publikum eine Polonaise startete, erreichte die Stimmung ihren Höhepunkt – und die hielt bis 2 Uhr früh an. Rund 15 Zugaben später war Schluss.

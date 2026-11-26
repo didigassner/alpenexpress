@@ -1,4 +1,24 @@
+# Alpenexpress Partyband – Suchmaschinen und KI-Suchdienste sind willkommen.
+
 User-agent: *
+Allow: /
+
+# KI-Suche und KI-Assistenten ausdrücklich erlaubt
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: Google-Extended
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: Bingbot
+User-agent: DuckAssistBot
+User-agent: meta-externalagent
+User-agent: CCBot
 Allow: /
 
 Sitemap: https://www.alpenexpress.at/sitemap-index.xml

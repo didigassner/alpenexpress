@@ -3,7 +3,7 @@ title: "Weihnachtsfeier in Zürs"
 date: 2017-12-30
 description: "Gäste aus aller Welt, Austropop, Charts und Rock: Weihnachtsfeier im Hotel Flexen in Zürs."
 image: ../../assets/rueckblick/zuers-weihnachtsfeier.jpg
-imageAlt: "Alpen Express Didie bei der Weihnachtsfeier in Zürs"
+imageAlt: "Didie von der Alpenexpress Partyband bei der Weihnachtsfeier in Zürs"
 ---
 
 Tolle Stimmung, super Ambiente und viel Freude hatte die Crew der Zürs AG bei ihrer Weihnachtsfeier am 28. Dezember 2017 im Hotel Flexen in Zürs.

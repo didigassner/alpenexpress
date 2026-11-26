@@ -6,7 +6,7 @@ image: ../../assets/rueckblick/camping-altnau.jpg
 imageAlt: "Festzelt auf dem Campingplatz Altnau"
 ---
 
-Es war wieder eine super Party mit Alpen Express Didie für die Gäste auf dem Campingplatz in Altnau!
+Es war wieder eine super Party mit Didie von der Alpenexpress Partyband für die Gäste auf dem Campingplatz in Altnau!
 
 Mit Musik für Jung und Alt brachte Didie einmal mehr Top-Stimmung ins Festzelt. Kulinarisch wurden alle Camper vom Chef persönlich mit verschiedenen Schmankerln verwöhnt.
 
