@@ -19,14 +19,23 @@ const clients = ['Siemens', 'Mercedes', 'Nestlé', 'Allianz', 'TUI', 'Ford', 'Me
 ---
 
 <Base
-  title="Über Didie Martin – Sänger, Entertainer & Elvis-Interpret"
-  description="Didie Martin von der Alpenexpress Partyband: Partymusiker aus Vorarlberg, bekannt aus der Rudi Carrell Show und zahlreichen TV-Auftritten. Referenzen, Kunden und Elvis-Show."
+  title="Über uns"
+  description="Wir sind die Alpenexpress Partyband – Musik, die Generationen verbindet! Live-Musik für Hochzeiten, Firmenfeiern, Zeltfeste, Oktoberfeste und Après-Ski."
 >
-  <PageHero eyebrow="Über mich" title="Didie Martin" lead="Der Partykracher aus Vorarlberg – bekannt aus Funk und Fernsehen und für beste Stimmung." />
+  <PageHero eyebrow="Über uns" title="Wir sind die Alpenexpress Partyband – Musik, die Generationen verbindet!" />
+
+  <section class="section">
+    <div class="wrap prose intro">
+      <p>
+        Mit Leidenschaft, Vielseitigkeit und langjähriger Bühnenerfahrung sorgen wir für beste Unterhaltung und ausgelassene Stimmung. Ob Hochzeiten, Firmenfeiern, Zeltfeste, Oktoberfeste oder Après-Ski – wir begeistern Jung und Alt mit abwechslungsreicher Live-Musik. Je nach Veranstaltung sind wir als Solist, Duo oder Trio buchbar. Viele Veranstalter buchen uns regelmässig wieder – darauf sind wir besonders stolz.
+      </p>
+    </div>
+  </section>
 
   <section class="section">
     <div class="wrap grid grid--2 align-start">
       <div>
+        <span class="eyebrow">Didie Martin</span>
         <h2>Musik für Jung und Alt</h2>
         <p>
           Die Alpenexpress Partyband spielt im Duo mit Gitarrist oder im Trio mit Band die beliebtesten Rockklassiker, aber auch die grossen Partyknaller, Austropop, bekannte Schweizer Mundartlieder, Hits der 50er- bis 90er-Jahre, aktuelle Charts, Oldies, Evergreens, Schlager, Oberkrainer, Country, Tanzmusik und vieles mehr.
@@ -71,7 +80,7 @@ const clients = ['Siemens', 'Mercedes', 'Nestlé', 'Allianz', 'TUI', 'Ford', 'Me
       </ul>
 
       <h2 class="spaced">Kunden (Auswahl)</h2>
-      <p class="lead">Zu meinen langjährigen Kunden zählen regionale, nationale und internationale Veranstalter und Unternehmen aus ganz Europa.</p>
+      <p class="lead">Zu unseren langjährigen Kunden zählen regionale, nationale und internationale Veranstalter und Unternehmen aus ganz Europa.</p>
       <ul class="tags">
         {clients.map((c) => <li>{c}</li>)}
       </ul>
@@ -83,6 +92,10 @@ const clients = ['Siemens', 'Mercedes', 'Nestlé', 'Allianz', 'TUI', 'Ford', 'Me
 </Base>
 
 <style>
+  .intro {
+    padding-bottom: 0;
+  }
+
   .align-start {
     align-items: start;
   }
