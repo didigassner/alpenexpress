@@ -6,10 +6,15 @@ import Icon from '../components/Icon.astro';
 import Testimonials from '../components/Testimonials.astro';
 import AudioList from '../components/AudioList.astro';
 import didie from '../assets/img/didie-martin.jpg';
+import hotelSpecial from '../assets/img/hotel-special-2027.webp';
 import { site } from '../data/site';
 import { kommendeTermine, formatDatum } from '../data/termine';
 
 const naechsterTermin = kommendeTermine()[0];
+
+// Hotel-Special 2027: Anfrage per E-Mail, kein Formular (Text so von Didi vorgegeben)
+const hotelMail =
+  'mailto:office@alpenexpress.at?subject=Anfrage%20%E2%80%93%20Alpenexpress%20Hotel-Special%202027&body=Guten%20Tag%2C%0A%0Ahiermit%20fordere%20ich%20ausdr%C3%BCcklich%20das%20Informationsblatt%20zum%20Alpenexpress%20Hotel-Special%202027%20per%20E-Mail%20an.%0A%0AHotelname%3A%0AAnsprechpartner%3A%0AGesch%C3%A4ftliche%20E-Mail-Adresse%3A%0A%0AFreundliche%20Gr%C3%BC%C3%9Fe';
 
 const occasions = [
   { title: 'Hochzeiten', text: 'Von der Trauung über den Apéro bis zur Party in den Morgenstunden – inklusive Wunschlied für den Brauttanz.' },
@@ -34,6 +39,35 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
   title="Alpen Express Didie – Partyband aus Vorarlberg im Duo & Trio"
   description="Live-Musik für Hochzeiten, Geburtstage, Firmenfeiern und Zeltfeste: Alpen Express Didie spielt im Duo oder Trio in Vorarlberg, der Schweiz, Liechtenstein und Süddeutschland. Jetzt unverbindlich anfragen."
 >
+  <section class="hotel-special" id="hotel-special" aria-labelledby="hotel-special-titel">
+    <div class="wrap hotel-special__inner">
+      <a href={hotelMail} class="hotel-special__bild" tabindex="-1">
+        <Image
+          src={hotelSpecial}
+          alt="Alpenexpress Hotel-Special 2027: Live-Musik, die Ihre Gäste begeistert! Exklusiver Hotelvorteil für Hotels – Informationsblatt auf Anfrage per E-Mail."
+          widths={[480, 800, 1200, 1600]}
+          sizes="(max-width: 900px) 100vw, 680px"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </a>
+      <div class="hotel-special__text">
+        <span class="eyebrow">Für Hotels</span>
+        <h2 id="hotel-special-titel">Alpenexpress Hotel-Special 2027</h2>
+        <p>Live-Musik, die Ihre Gäste begeistert – mit einem exklusiven Vorteil für Hotels.</p>
+        <a class="btn hotel-special__btn" href={hotelMail}>
+          <Icon name="mail" /> Fordern Sie jetzt Ihren exklusiven Hotelvorteil an!
+        </a>
+        <p class="hotel-special__hinweis">
+          Das Informationsblatt senden wir Ihnen nach Ihrer Anfrage persönlich per E-Mail zu. Die Anfrage gilt nur für dieses Angebot – keine weitere Werbung.
+        </p>
+        <p class="hotel-special__hinweis">
+          Kein E-Mail-Programm? Schreiben Sie einfach an <a href="mailto:office@alpenexpress.at">office@alpenexpress.at</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section class="hero">
     <Image src={didie} alt="Didie Martin von Alpen Express" class="hero__img" widths={[640, 1024, 1600, 2200]} sizes="100vw" loading="eager" fetchpriority="high" />
     <div class="wrap hero__content">
@@ -203,6 +237,79 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
 </Base>
 
 <style>
+  .hotel-special {
+    background: var(--ink);
+    color: #fff;
+    padding-block: clamp(16px, 3vw, 40px);
+  }
+
+  .hotel-special__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: clamp(16px, 3vw, 40px);
+    align-items: center;
+  }
+
+  .hotel-special__bild {
+    display: block;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .hotel-special__bild img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .hotel-special__text h2 {
+    margin-bottom: 0.4em;
+  }
+
+  .hotel-special .eyebrow {
+    color: var(--gold);
+  }
+
+  .hotel-special__text p {
+    color: #e9e6df;
+  }
+
+  .hotel-special__btn {
+    width: 100%;
+    min-height: 64px;
+    margin: 8px 0 16px;
+    padding: 0.9em 1.2em;
+    font-size: clamp(1.1rem, 1rem + 0.4vw, 1.3rem);
+    font-weight: 750;
+    line-height: 1.25;
+    text-align: center;
+    background: var(--gold);
+    color: var(--ink);
+    border-color: #fff;
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.35);
+  }
+
+  .hotel-special__btn:hover,
+  .hotel-special__btn:focus-visible {
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .hotel-special__hinweis {
+    font-size: 0.95rem;
+    margin-bottom: 0.5em;
+  }
+
+  .hotel-special__text a:not(.btn) {
+    color: var(--gold);
+    font-weight: 650;
+  }
+
+  @media (max-width: 900px) {
+    .hotel-special__inner {
+      grid-template-columns: 1fr;
+    }
+  }
   .hero {
     position: relative;
     isolation: isolate;
