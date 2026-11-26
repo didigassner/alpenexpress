@@ -17,11 +17,59 @@ const hotelMail =
   'mailto:office@alpenexpress.at?subject=Anfrage%20%E2%80%93%20Alpenexpress%20Hotel-Special%202027&body=Guten%20Tag%2C%0A%0Ahiermit%20fordere%20ich%20ausdr%C3%BCcklich%20das%20Informationsblatt%20zum%20Alpenexpress%20Hotel-Special%202027%20per%20E-Mail%20an.%0A%0AHotelname%3A%0AAnsprechpartner%3A%0AGesch%C3%A4ftliche%20E-Mail-Adresse%3A%0A%0AFreundliche%20Gr%C3%BC%C3%9Fe';
 
 const occasions = [
-  { title: 'Hochzeiten', text: 'Von der Trauung über den Apéro bis zur Party in den Morgenstunden – inklusive Wunschlied für den Brauttanz.' },
-  { title: 'Geburtstage & Jubiläen', text: 'Musik für alle Generationen, die Gäste vom ersten Lied an auf die Tanzfläche holt.' },
-  { title: 'Firmen- & Weihnachtsfeiern', text: 'Dezente Hintergrundmusik zum Essen, danach Stimmung – zuverlässig und professionell.' },
-  { title: 'Zeltfeste & Vereine', text: 'Oktoberfest, Grümpelturnier, Funkenfest oder Saisonabschluss: Partykracher und Mitsinglieder bis zum Schluss.' },
+  {
+    title: 'Hochzeiten und Geburtstage',
+    text: 'Von der Trauung über den Apéro bis zur Party in den Morgenstunden – inklusive Wunschlied für den Brauttanz. Bei Geburtstagen und Jubiläen Musik für alle Generationen, die Gäste vom ersten Lied an auf die Tanzfläche holt.',
+    link: { href: u('/hochzeit/'), label: 'Mehr zur Hochzeitsmusik' },
+  },
+  {
+    title: 'Firmenfeiern, Vereinsfeste und Zeltfeste',
+    text: 'Dezente Hintergrundmusik zum Essen, danach Stimmung – bei Firmen- und Weihnachtsfeiern genauso wie bei Oktoberfest, Grümpelturnier, Funkenfest oder Saisonabschluss. Partykracher und Mitsinglieder bis zum Schluss, für grosse Feste auch im Trio.',
+    link: { href: u('/rueckblick/'), label: 'Zum Rückblick' },
+  },
+  {
+    title: 'Hotels, Tanzveranstaltungen und Après-Ski',
+    text: 'Tanzmusik, Stimmungslieder und aktuelle Hits für Hotelgäste, Tanzabende und Après-Ski – etwa bei der Weihnachtsfeier im Hotel Flexen in Zürs oder beim Tanz- und Stimmungsabend im Gasthaus Sternen in Kriessern.',
+    link: { href: '#hotel-special', label: 'Zum Hotel-Special 2027' },
+  },
 ];
+
+const staerken = [
+  { title: 'Duo oder Trio', text: 'Flexible Besetzung: im Duo mit Gitarrist oder im Trio mit Band.' },
+  { title: 'Vielseitiges Repertoire', text: 'Hunderte Lieder in mehreren Sprachen – von Schlager und Volksmusik bis Rock und aktuellen Charts.' },
+  { title: 'Bis zu 6 Stunden Musik', text: 'Bis zu sechs Stunden Live-Musik, nahezu durchgehend.' },
+  { title: 'Bis 500 Gäste', text: 'Für Feste und Veranstaltungen mit bis zu 500 Gästen.' },
+  { title: 'Wiederkehrende Buchungen', text: 'Veranstalter buchen immer wieder – beim Firmen-Oktoberfest in Zürich schon zum siebten Mal in Folge.' },
+];
+
+const faq = [
+  {
+    q: 'Wo spielt die Alpenexpress Partyband?',
+    a: `Vor allem in Vorarlberg, der ganzen Schweiz mit Ostschweiz und Graubünden, in Liechtenstein und in Süddeutschland mit Allgäu und Bodenseeraum – auf Anfrage aber auch weiter weg. Zu Hause bin ich in ${site.city}, Vorarlberg.`,
+  },
+  {
+    q: 'Duo oder Trio – was passt zu meinem Fest?',
+    a: 'Das Duo mit Gitarrist passt zu den meisten Feiern und Hochzeiten. Für grosse Feste, Zeltfeste und Firmenevents gibt es das Trio mit Band und noch vollerem Sound. Als Alleinunterhalter spiele ich nur auf Anfrage. Gerne berate ich dich persönlich.',
+  },
+  {
+    q: 'Kannst du auch mein Wunschlied spielen?',
+    a: 'Sehr gerne! Ist ein Titel noch nicht im Repertoire, studiere ich ihn für dich ein – sag mir bitte etwa vier Wochen vor dem Termin Bescheid.',
+  },
+  {
+    q: 'Wie schnell sollte ich buchen?',
+    a: 'Gerade an Wochenenden im Sommer und in der Hochzeitssaison sind Termine schnell vergeben. Bestätige deinen Termin am besten innerhalb von fünf Tagen nach meinem Angebot – danach kann er bereits vergeben sein.',
+  },
+  {
+    q: 'Was kostet ein Auftritt?',
+    a: 'Das hängt von Dauer, Ort und Besetzung ab. Schick mir einfach eine kurze Anfrage, du bekommst ein kostenloses und unverbindliches Angebot – faire Preise sind mir wichtig.',
+  },
+];
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
 
 const included = [
   'Hintergrundmusik zum Apéro und Essen',
@@ -36,8 +84,9 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
 ---
 
 <Base
-  title="Alpen Express Didie – Partyband aus Vorarlberg im Duo & Trio"
-  description="Live-Musik für Hochzeiten, Geburtstage, Firmenfeiern und Zeltfeste: Alpen Express Didie spielt im Duo oder Trio in Vorarlberg, der Schweiz, Liechtenstein und Süddeutschland. Jetzt unverbindlich anfragen."
+  title="Alpenexpress Partyband – Live-Band aus Vorarlberg im Duo & Trio"
+  description="Partyband im Duo oder Trio für Hochzeiten, Geburtstage, Firmenfeiern, Zeltfeste, Hotels und Tanzabende in Vorarlberg, der Ostschweiz, Graubünden, Liechtenstein und Süddeutschland."
+  jsonLd={[faqJsonLd]}
 >
   <section class="hotel-special" id="hotel-special" aria-labelledby="hotel-special-titel">
     <div class="wrap hotel-special__inner">
@@ -69,17 +118,34 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
   </section>
 
   <section class="hero">
-    <Image src={didie} alt="Didie Martin von Alpen Express" class="hero__img" widths={[640, 1024, 1600, 2200]} sizes="100vw" loading="eager" fetchpriority="high" />
+    <Image src={didie} alt="Didie Martin von der Alpenexpress Partyband" class="hero__img" widths={[640, 1024, 1600, 2200]} sizes="100vw" loading="eager" fetchpriority="high" />
     <div class="wrap hero__content">
       <span class="eyebrow">Partyband aus Vorarlberg – im Duo oder Trio</span>
-      <h1>Musik, über die deine Gäste noch lange reden.</h1>
+      <h1>Alpenexpress Partyband – Ihre Live-Band für Österreich, die Schweiz, Liechtenstein und Deutschland.</h1>
+      <p class="hero__sub">Musik, die Generationen verbindet!</p>
       <p class="lead">
-        Alpen Express Didie bringt Stimmung auf Hochzeiten, Geburtstage, Firmenfeiern und Zeltfeste – im Duo oder Trio, in Österreich, der Schweiz, Liechtenstein und Süddeutschland.
+        Live-Musik im Duo oder Trio für Hochzeiten, Geburtstage, Firmenfeiern, Vereins- und Zeltfeste, Hotels, Tanzveranstaltungen und Après-Ski – in Vorarlberg, der Ostschweiz, Graubünden, Liechtenstein, Süddeutschland, im Allgäu und im Bodenseeraum.
       </p>
       <div class="btn-row">
         <a class="btn" href={u('/kontakt/')}>Kostenloses Angebot anfragen <Icon name="arrow" /></a>
         <a class="btn btn--ghost" href={u('/mediathek/')}>Hörproben anhören</a>
       </div>
+    </div>
+  </section>
+
+  <section class="staerken" aria-labelledby="staerken-titel">
+    <div class="wrap">
+      <h2 id="staerken-titel" class="visually-hidden">Das zeichnet die Alpenexpress Partyband aus</h2>
+      <ul class="staerken__liste">
+        {
+          staerken.map((st) => (
+            <li>
+              <strong>{st.title}</strong>
+              <span>{st.text}</span>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
@@ -127,7 +193,7 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
         <span class="eyebrow">Herzlich willkommen</span>
         <h2>Hey, ich bin Didie!</h2>
         <p>
-          Didie Martin, alias Alpen Express Didie. Seit vielen Jahren stehe ich mit Gesang und Keyboard auf der Bühne – mit einem Ziel: dass dein Fest ein voller Erfolg wird. Ob im Duo mit Gitarrist oder im Trio mit Band, ich lebe leidenschaftlich für die Musik, weil sie
+          Didie Martin von der Alpenexpress Partyband. Seit vielen Jahren stehe ich mit Gesang und Keyboard auf der Bühne – mit einem Ziel: dass dein Fest ein voller Erfolg wird. Ob im Duo mit Gitarrist oder im Trio mit Band, ich lebe leidenschaftlich für die Musik, weil sie
         </p>
         <ul class="checklist">
           <li>glücklich macht,</li>
@@ -140,20 +206,25 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
         </p>
         <a href={u('/didie/')}>Mehr über mich <Icon name="arrow" class="inline-icon" /></a>
       </div>
-      <Image src={didie} alt="Didie Martin von Alpen Express" class="photo" widths={[480, 800, 1075]} sizes="(max-width: 760px) 100vw, 560px" />
+      <Image src={didie} alt="Didie Martin von der Alpenexpress Partyband" class="photo" widths={[480, 800, 1075]} sizes="(max-width: 760px) 100vw, 560px" />
     </div>
   </section>
 
   <section class="section section--white">
     <div class="wrap">
       <span class="eyebrow">Für jeden Anlass</span>
-      <h2>Wofür du mich buchen kannst</h2>
+      <h2>Anlässe für die Alpenexpress Partyband</h2>
       <div class="grid grid--3 occasions">
         {
           occasions.map((o) => (
             <div class="card occasion">
               <h3>{o.title}</h3>
               <p>{o.text}</p>
+              <p class="occasion__link">
+                <a href={o.link.href}>
+                  {o.link.label} <Icon name="arrow" class="inline-icon" />
+                </a>
+              </p>
             </div>
           ))
         }
@@ -191,7 +262,7 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
     <div class="wrap grid grid--2 align-start">
       <div>
         <span class="eyebrow">Reinhören</span>
-        <h2>So klingt Alpen Express</h2>
+        <h2>So klingt die Alpenexpress Partyband</h2>
         <p class="lead">Zwei kurze Hörproben aus dem Programm – viele weitere findest du in der Mediathek.</p>
         <a class="btn" href={u('/mediathek/')}>Alle Hörproben & Videos</a>
       </div>
@@ -211,26 +282,14 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
       <span class="eyebrow">Gut zu wissen</span>
       <h2>Häufige Fragen</h2>
       <div class="faq">
-        <details>
-          <summary>Wo spielst du?</summary>
-          <p>Vor allem in Vorarlberg, der ganzen Schweiz, Liechtenstein und Süddeutschland – auf Anfrage aber auch weiter weg. Ich wohne in {site.city}, Vorarlberg.</p>
-        </details>
-        <details>
-          <summary>Duo oder Trio – was passt zu meinem Fest?</summary>
-          <p>Das Duo mit Gitarrist passt zu den meisten Feiern und Hochzeiten. Für grosse Feste, Zeltfeste und Firmenevents gibt es das Trio mit Band und noch vollerem Sound. Als Alleinunterhalter spiele ich nur auf Anfrage. Gerne berate ich dich persönlich.</p>
-        </details>
-        <details>
-          <summary>Kannst du auch mein Wunschlied spielen?</summary>
-          <p>Sehr gerne! Ist ein Titel noch nicht im Repertoire, studiere ich ihn für dich ein – sag mir bitte etwa vier Wochen vor dem Termin Bescheid.</p>
-        </details>
-        <details>
-          <summary>Wie schnell sollte ich buchen?</summary>
-          <p>Gerade an Wochenenden im Sommer und in der Hochzeitssaison sind Termine schnell vergeben. Bestätige deinen Termin am besten innerhalb von fünf Tagen nach meinem Angebot – danach kann er bereits vergeben sein.</p>
-        </details>
-        <details>
-          <summary>Was kostet ein Auftritt?</summary>
-          <p>Das hängt von Dauer, Ort und Besetzung ab. Schick mir einfach eine kurze Anfrage, du bekommst ein kostenloses und unverbindliches Angebot – faire Preise sind mir wichtig.</p>
-        </details>
+        {
+          faq.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -346,7 +405,55 @@ const genres = ['Partyhits', 'Aktuelle Charts', 'Austropop', 'Schweizer Mundart'
   }
 
   .hero h1 {
-    max-width: 14ch;
+    max-width: 24ch;
+    font-size: clamp(2.2rem, 1.4rem + 3.6vw, 4.4rem);
+    margin-bottom: 0.25em;
+  }
+
+  .hero__sub {
+    font-family: var(--display);
+    font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.4rem);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    color: var(--gold);
+    margin-bottom: 0.6em;
+  }
+
+  .staerken {
+    background: var(--accent);
+    color: #fff;
+    padding-block: clamp(20px, 3vw, 32px);
+  }
+
+  .staerken__liste {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+    gap: 16px 24px;
+  }
+
+  .staerken__liste li {
+    display: grid;
+    gap: 4px;
+  }
+
+  .staerken__liste strong {
+    font-size: 1.1rem;
+  }
+
+  .staerken__liste span {
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .occasion__link {
+    margin-top: 12px !important;
+  }
+
+  .occasion__link a {
+    font-weight: 650;
   }
 
   .hero .eyebrow {

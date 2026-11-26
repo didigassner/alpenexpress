@@ -4,10 +4,10 @@ video: F94a59je3LI
 date: 2018-09-20
 description: "Zum fünften Mal in Sarmenstorf: Stimmung, Tanz und Party von 16 Uhr bis Mitternacht."
 image: ../../assets/rueckblick/oktoberfest-sarmenstorf.jpg
-imageAlt: "Oktoberfest Sarmenstorf mit Alpen Express Didie"
+imageAlt: "Oktoberfest Sarmenstorf mit Didie von der Alpenexpress Partyband"
 ---
 
-Bereits zum fünften Mal holten die Veranstalter Alpen Express Didie für das alljährliche Oktoberfest nach Sarmenstorf!
+Bereits zum fünften Mal holten die Veranstalter Didie von der Alpenexpress Partyband für das alljährliche Oktoberfest nach Sarmenstorf!
 
 „Didie ist ein Garant für Top-Stimmung und weiss, was die Partypeople wollen“, so einer der Veranstalter.
 

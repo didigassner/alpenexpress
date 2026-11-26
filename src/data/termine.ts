@@ -24,7 +24,7 @@ export const termine: Termin[] = [
     place: 'Kriessern (CH)',
     text: 'Tanzmusik, gute Laune und beste Stimmung – wir freuen uns auf euch!',
     flyer: flyerSternen2026,
-    flyerAlt: 'Flyer: Tanz- und Stimmungsabend mit Alpenexpress Didi im Duo, Samstag, 5. Dezember 2026, ab 20 Uhr, Gasthaus Sternen, Kriessern (CH)',
+    flyerAlt: 'Flyer: Tanz- und Stimmungsabend mit der Alpenexpress Partyband im Duo, Samstag, 5. Dezember 2026, ab 20 Uhr, Gasthaus Sternen, Kriessern (CH)',
   },
 ];
 

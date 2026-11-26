@@ -7,6 +7,6 @@ image: ../../assets/rueckblick/fc-alberschwende.jpg
 imageAlt: "Saisonabschlussparty beim FC Alberschwende"
 ---
 
-Einen krönenden Saisonabschluss feierte der FC Alberschwende am 10. November 2018 mit Alpen Express Didie.
+Einen krönenden Saisonabschluss feierte der FC Alberschwende am 10. November 2018 mit Didie von der Alpenexpress Partyband.
 
 Geplant war die Party von 16 bis 20 Uhr. Mit vier Stunden Verlängerung ging es bis Mitternacht mit Vollgas weiter – die Stimmung war grandios!

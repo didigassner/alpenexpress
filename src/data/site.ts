@@ -1,7 +1,7 @@
 import { u } from '../lib/url';
 
 export const site = {
-  name: 'Alpen Express Didie',
+  name: 'Alpenexpress Partyband',
   claim: 'Partyband aus Vorarlberg – im Duo oder Trio',
   url: 'https://www.alpenexpress.at',
   person: 'Didie Martin',
