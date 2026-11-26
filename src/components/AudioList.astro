@@ -15,8 +15,8 @@ const { tracks } = Astro.props;
           <strong>{t.title}</strong>
           {t.artist && <span>{t.artist}</span>}
         </div>
-        <audio controls preload="none" src={u(`/audio/${t.file}`)}>
-          <a href={u(`/audio/${t.file}`)}>{t.title} anhören</a>
+        <audio controls controlslist="nodownload" preload="none" src={u(`/audio/${t.file}`)}>
+          Dein Browser kann diese Hörprobe nicht abspielen.
         </audio>
       </li>
     ))
