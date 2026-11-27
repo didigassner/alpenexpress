@@ -5,7 +5,10 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import didie from '../assets/img/didie-martin.jpg';
-import trioBlau from '../assets/img/alpenexpress-trio-blau.webp';
+import duoGitarre from '../assets/img/alpenexpress-duo-gitarre.webp';
+import duoBass from '../assets/img/alpenexpress-duo-bass.webp';
+import trioLederhosen from '../assets/img/alpenexpress-trio-lederhosen.webp';
+import trioHemd from '../assets/img/alpenexpress-trio-hemd.webp';
 ---
 
 <Base
@@ -15,8 +18,31 @@ import trioBlau from '../assets/img/alpenexpress-trio-blau.webp';
   <PageHero eyebrow="Duo & Trio" title="Die Top-Kombination" lead="Die Alpenexpress Partyband gibt es im Duo mit Gitarrist oder im Trio mit Band für die ganz grossen Feste." />
 
   <section class="section">
-    <div class="wrap grid grid--2">
-      <Image src={didie} alt="Didie Martin von der Alpenexpress Partyband" class="photo" widths={[480, 800, 1200]} sizes="(max-width: 760px) 100vw, 560px" />
+    <div class="wrap band-block">
+      <div class="grid grid--2 align-start">
+        <figure>
+          <Image
+            src={duoGitarre}
+            alt="Die Alpenexpress Partyband im Duo vor dunkelblauem Hintergrund: links ein Gitarrist mit heller Schirmmütze, weissem Hemd und heller E-Gitarre, rechts ein Keyboarder mit schwarzer Schirmmütze und Umhänge-Keyboard an einem Standmikrofon. Beide tragen schwarze Hosen."
+            class="photo"
+            widths={[480, 800, 1200]}
+            sizes="(max-width: 760px) 100vw, 560px"
+            loading="lazy"
+          />
+          <figcaption>Die Alpenexpress Partyband im Duo, mit Gitarre</figcaption>
+        </figure>
+        <figure>
+          <Image
+            src={duoBass}
+            alt="Die Alpenexpress Partyband im Duo vor blauem Hintergrund: links ein Bassist mit Schiebermütze, weissem Hemd und blauem E-Bass, rechts ein Keyboarder mit schwarzer Schirmmütze und Umhänge-Keyboard an einem Standmikrofon. Beide tragen schwarze Hosen."
+            class="photo"
+            widths={[480, 800, 1200]}
+            sizes="(max-width: 760px) 100vw, 560px"
+            loading="lazy"
+          />
+          <figcaption>Die Alpenexpress Partyband im Duo, mit Bass</figcaption>
+        </figure>
+      </div>
       <div>
         <span class="eyebrow">Unser Motto</span>
         <h2>Spitzenunterhaltung zu fairen Preisen</h2>
@@ -39,21 +65,8 @@ import trioBlau from '../assets/img/alpenexpress-trio-blau.webp';
     </div>
   </section>
 
-  <section class="section">
-    <div class="wrap">
-      <span class="eyebrow">Fotos</span>
-      <h2>So sehen wir aus</h2>
-      <div class="grid grid--2 align-start">
-        <figure>
-          <Image src={trioBlau} alt="Die Alpenexpress Partyband im Trio vor blauem Hintergrund: links ein Bassist mit Schiebermütze und blauem E-Bass, in der Mitte Didie mit Umhänge-Keyboard am Mikrofon, rechts ein Gitarrist mit heller Schirmmütze und E-Gitarre. Alle drei tragen schwarze T-Shirts und Lederhosen." class="photo" widths={[480, 800, 1200]} sizes="(max-width: 760px) 100vw, 560px" />
-          <figcaption>Die Alpenexpress Partyband im Trio</figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
   <section class="section section--white">
-    <div class="wrap grid grid--2 align-start">
+    <div class="wrap band-block">
       <div>
         <span class="eyebrow">Alpenexpress Partyband im Trio</span>
         <h2>Noch mehr Power für grosse Feste</h2>
@@ -64,6 +77,35 @@ import trioBlau from '../assets/img/alpenexpress-trio-blau.webp';
           <a class="btn" href={u('/kontakt/')}>Trio anfragen <Icon name="arrow" /></a>
         </div>
       </div>
+      <div class="grid grid--2 align-start">
+        <figure>
+          <Image
+            src={trioLederhosen}
+            alt="Die Alpenexpress Partyband als Trio vor kräftig blauem Hintergrund: links ein Bassist mit Schiebermütze und blauem E-Bass, in der Mitte ein Keyboarder mit Umhänge-Keyboard am Mikrofon, rechts ein Gitarrist mit heller Schirmmütze und E-Gitarre. Alle drei tragen schwarze T-Shirts und Lederhosen."
+            class="photo"
+            widths={[480, 800, 1200]}
+            sizes="(max-width: 760px) 100vw, 560px"
+            loading="lazy"
+          />
+          <figcaption>Die Alpenexpress Partyband als Trio, in Lederhosen</figcaption>
+        </figure>
+        <figure>
+          <Image
+            src={trioHemd}
+            alt="Die Alpenexpress Partyband als Trio vor blauem Hintergrund: links ein Bassist mit Schiebermütze und blauem E-Bass, in der Mitte ein Keyboarder mit Umhänge-Keyboard am Mikrofon, rechts ein Gitarrist mit heller Schirmmütze und E-Gitarre. Alle drei tragen weisse Hemden und schwarze Hosen."
+            class="photo"
+            widths={[480, 800, 1200]}
+            sizes="(max-width: 760px) 100vw, 560px"
+            loading="lazy"
+          />
+          <figcaption>Die Alpenexpress Partyband als Trio, mit Hemd</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid grid--2 align-start">
       <div>
         <span class="eyebrow">Auf Anfrage</span>
         <h2>Didie als Alleinunterhalter</h2>
@@ -71,6 +113,32 @@ import trioBlau from '../assets/img/alpenexpress-trio-blau.webp';
           Für kleinere Feiern spielt Didie auf Anfrage auch solo mit Gesang und Keyboard. Frag einfach nach – wir sagen dir gerne, ob das für dein Fest passt.
         </p>
       </div>
+      <Image
+        src={didie}
+        alt="Porträt von Didie Martin mit Schirmmütze"
+        class="photo"
+        widths={[480, 800, 1200]}
+        sizes="(max-width: 760px) 100vw, 560px"
+        loading="lazy"
+      />
     </div>
   </section>
 </Base>
+
+<style>
+  .band-block {
+    display: grid;
+    gap: clamp(28px, 4vw, 48px);
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  figcaption {
+    margin: 0.55em 0 0;
+    color: var(--muted);
+    font-size: 0.95em;
+    text-align: center;
+  }
+</style>
