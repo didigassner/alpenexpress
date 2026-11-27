@@ -5,6 +5,7 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import didie from '../assets/img/didie-martin.jpg';
+import trioBlau from '../assets/img/alpenexpress-trio-blau.webp';
 ---
 
 <Base
@@ -34,6 +35,19 @@ import didie from '../assets/img/didie-martin.jpg';
           <a class="btn" href={u('/kontakt/')}>Duo anfragen <Icon name="arrow" /></a>
           <a class="btn btn--ghost" href={u('/hochzeit/')}>Das Duo auf Hochzeiten</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">Fotos</span>
+      <h2>So sehen wir aus</h2>
+      <div class="grid grid--2 align-start">
+        <figure>
+          <Image src={trioBlau} alt="Die Alpenexpress Partyband im Trio vor blauem Hintergrund: links ein Bassist mit Schiebermütze und blauem E-Bass, in der Mitte Didie mit Umhänge-Keyboard am Mikrofon, rechts ein Gitarrist mit heller Schirmmütze und E-Gitarre. Alle drei tragen schwarze T-Shirts und Lederhosen." class="photo" widths={[480, 800, 1200]} sizes="(max-width: 760px) 100vw, 560px" />
+          <figcaption>Die Alpenexpress Partyband im Trio</figcaption>
+        </figure>
       </div>
     </div>
   </section>
