@@ -16,6 +16,20 @@ const events = [
 ];
 
 const clients = ['Siemens', 'Mercedes', 'Nestlé', 'Allianz', 'TUI', 'Ford', 'Media Markt', 'McDonald’s', 'Johnson & Johnson', 'Edeka', 'Eduscho', 'Suchard', 'Granini', 'Bausparkasse Schwäbisch Hall', 'Nord/LB', 'WestLB', 'ISPO', 'Kärnten Tourismus', 'Flughafen Kärnten', 'Fulda Reifen', 'Banner Batterien', 'ALU Tec', 'Nachbaur Reisen', 'KSV Götzis', 'Mercedes Schneider Dornbirn'];
+
+// Vorbereitete E-Mails (Texte so von Didi vorgegeben), reine mailto-Links ohne Script
+const mailto = (subject: string, body: string) =>
+  `mailto:office@alpenexpress.at?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+const cdMail = mailto(
+  'CD-Anfrage – Didi Martin / Dietmar Gassner',
+  'Hallo Didi,\n\nich interessiere mich für folgende CD: [Irgendwann / Ich denk an dich]\n\nBitte teile mir die Bestell- und Versandmöglichkeiten mit.\n\nGewünschte CD:\nStückzahl:\nLieferland:\n\nViele Grüsse',
+);
+
+const royBlackMail = mailto(
+  'Buchungsanfrage – Roy-Black-Hommage',
+  'Hallo Didi,\n\nich interessiere mich für deine Roy-Black-Hommage. Das ist eine unverbindliche Anfrage für die Roy-Black-Hommage, separat von der Partyband.\n\nVeranstaltungsdatum:\nVeranstaltungsort:\nVeranstaltungsart:\n\nViele Grüsse',
+);
 ---
 
 <Base
@@ -71,6 +85,63 @@ const clients = ['Siemens', 'Mercedes', 'Nestlé', 'Allianz', 'TUI', 'Ford', 'Me
     </div>
   </section>
 
+  <section class="section section--white" aria-labelledby="musiker">
+    <div class="wrap prose musiker">
+      <span class="eyebrow">Die Band</span>
+      <h2 id="musiker">Unsere Musiker</h2>
+
+      <article>
+        <h3>Alexander (Alex) – Gitarre und Gesang</h3>
+        <p>Geboren am 13. April in Leoben in der Steiermark, lebt Alex heute in Feldkirch. Als jüngstes Mitglied der Alpenexpress Partyband bereichert er die Formation mit seiner langjährigen Bühnenerfahrung, musikalischen Vielseitigkeit und Leidenschaft.</p>
+        <p>Ob E-Gitarre, Akustikgitarre oder Gesang – seine musikalischen Stärken reichen von Austropop, Rock und Country über Pop bis hin zu zeitgemäßen Partysongs.</p>
+        <p>Mit seinem Gespür für das Publikum und die richtige Musik im richtigen Moment trägt er zu stimmungsvollen und unvergesslichen Veranstaltungen bei.</p>
+      </article>
+
+      <article>
+        <h3>Silvio (Silli) – Gesang, Schlagzeug und Bass</h3>
+        <p>Der gebürtige Salzburger ist ein Vollblutmusiker mit langjähriger Musiker- und Bühnenerfahrung. Bereits in jungen Jahren entdeckte er seine Leidenschaft für die Musik. Neben seinem Gesang beherrscht er Schlagzeug, Bass und Keyboard. Seine besonderen musikalischen Stärken liegen im Schlager, in der volkstümlichen Musik sowie in der Tanz- und Unterhaltungsmusik. Mit seiner Erfahrung und Vielseitigkeit bereichert er die Alpenexpress Partyband.</p>
+        <p>Eine besondere Gemeinsamkeit mit Didi: Beide feiern am 28. Dezember Geburtstag.</p>
+      </article>
+
+      <article>
+        <h3>Didi – Gesang, Keyboard, Bandleitung und Management</h3>
+        <p>Der gebürtige Götzner blickt auf eine vielseitige musikalische Karriere mit langjähriger Bühnen- und Fernseherfahrung zurück. Bereits in jungen Jahren entdeckte er seine Leidenschaft für die Musik.</p>
+        <p>Sein Auftritt als Roy-Black-Interpret in der legendären Rudi-Carrell-Show verschaffte ihm überregionale Aufmerksamkeit im deutschsprachigen Musikgeschäft. Es folgten Auftritte in verschiedenen TV-Sendungen, zahlreiche Presseberichte bis hin zu Titelgeschichten in bekannten Zeitschriften der Regenbogenpresse sowie verschiedene Musikproduktionen. Auch als Elvis-Imitator begeistert er mit seiner musikalischen Vielseitigkeit. Die Zusammenarbeit mit dem Musikproduzenten Günter Behrle, den Persönlichkeiten der Schlagerbranche Kurt Hertha und Rolf Arland sowie seinem damaligen Manager Hans R. Bayerlein prägte seinen musikalischen Werdegang.</p>
+        <p>Unter seinem bürgerlichen Namen Dietmar Gassner veröffentlichte er bei Titan die Maxi-CD „Irgendwann“. Unter dem Künstlernamen Didi Martin erschien bei Tyrolis sein Album „Ich denk an dich“ – eine musikalische Hommage an Roy Black, initiiert von Günter Behrle und Tyrolis-Chef Christian Rasinger, gemeinsam mit Didi, der dabei selbst als Produzent mitwirkte. Auch auf einer Gemeinschaftsproduktion von „Meine Melodie“ war er als Interpret vertreten.</p>
+        <p>Sein vielseitiges Repertoire reicht von Schlager, Country und Pop bis hin zu Austropop. Sein musikalisches Herz schlägt jedoch besonders für Rock ’n’ Roll und mitreißende Partymusik. Als Kopf und musikalische treibende Kraft der Alpenexpress Partyband ist er für die musikalische Ausrichtung, Organisation und das Management verantwortlich.</p>
+        <p>Weitere Einblicke in seinen musikalischen Werdegang bieten die Presseberichte, Fernsehauftritte und CD-Produktionen.</p>
+        <p>Auch heute ist Didi auf Anfrage mit seiner Roy-Black-Hommage live zu erleben. Dieses separat buchbare Programm umfasst nach Vereinbarung zwei musikalische Auftritte von jeweils rund 20 Minuten.</p>
+        <p class="btn-row">
+          <a class="btn mail-btn" href={royBlackMail}>Roy-Black-Hommage anfragen</a>
+        </p>
+        <p class="hint">Der Button öffnet eine vorbereitete E-Mail an office@alpenexpress.at. Die Anfrage ist unverbindlich und separat von der Partyband.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="cds">
+    <div class="wrap prose musiker">
+      <span class="eyebrow">CD-Produktionen</span>
+      <h2 id="cds">Didis CDs</h2>
+
+      <article>
+        <h3>„Ich denk an dich“ – Didi Martin</h3>
+        <p>Album, erschienen bei Tyrolis – eine musikalische Hommage an Roy Black.</p>
+        <p>Auch im Musikhandel in Österreich, Deutschland und der Schweiz erhältlich. Direkt hier bestellen – 12 Euro, auf Wunsch persönlich signiert, zuzüglich Versand. Versand Österreich 4 Euro, europäisches Ausland 8 Euro; Schweiz/Liechtenstein gegebenenfalls Zollformalitäten.</p>
+      </article>
+
+      <article>
+        <h3>„Irgendwann“ – Dietmar Gassner</h3>
+        <p>Maxi-CD, erschienen bei Titan. Preis und Versand auf Anfrage.</p>
+      </article>
+
+      <p class="btn-row">
+        <a class="btn mail-btn" href={cdMail}>CD direkt hier bestellen</a>
+      </p>
+      <p class="hint">Der Button öffnet eine vorbereitete E-Mail an office@alpenexpress.at. Bitte gewünschte CD, Stückzahl und Lieferland angeben.</p>
+    </div>
+  </section>
+
   <section class="section">
     <div class="wrap">
       <span class="eyebrow">Referenzen</span>
@@ -111,5 +182,29 @@ const clients = ['Siemens', 'Mercedes', 'Nestlé', 'Allianz', 'TUI', 'Ford', 'Me
 
   .spaced {
     margin-top: 56px;
+  }
+  .musiker article {
+    margin-top: 40px;
+  }
+
+  .musiker article h3 {
+    margin-bottom: 0.4em;
+  }
+
+  .hint {
+    color: var(--muted);
+    font-size: 0.95em;
+  }
+
+  .mail-btn {
+    min-height: 52px;
+    font-size: 1.1em;
+  }
+
+  .mail-btn:focus-visible {
+    outline: 4px solid var(--ink);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 7px var(--gold);
+    text-decoration: underline;
   }
 </style>
